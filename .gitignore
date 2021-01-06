@@ -20,5 +20,6 @@ SDL2.dll
 *.png
 *.bmp
 *.txt
+!movies/*.txt
 *.bin
 *.gqs
