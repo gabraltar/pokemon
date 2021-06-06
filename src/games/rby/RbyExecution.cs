@@ -62,6 +62,7 @@ public partial class Rby {
     }
 
     public void PickupItem() {
+        RunUntil("JoypadOverworld");
         Inject(Joypad.A);
         Hold(Joypad.A, SYM["PlaySound"]);
         RunUntil("JoypadOverworld");

@@ -5,7 +5,7 @@ public class RbyTurn {
     public int Flags;
 
     public RbyTurn(string move, int flags = 0) {
-        Move = move;
+        Move = move.ToUpper();
         Flags = flags;
 
         if((Flags & 0x3f) == 0) {
