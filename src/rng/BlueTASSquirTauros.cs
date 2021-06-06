@@ -49,8 +49,6 @@ public class BlueTASSquirTauros : RedBlueForce {
         Yes();
         ClearText(); // helix fossil picked up
 
-        Record("blue-tas");
-
         TalkTo("BikeShop", 6, 3);
         No();
         ClearText(); // got instant text
@@ -71,9 +69,9 @@ public class BlueTASSquirTauros : RedBlueForce {
 
         TalkTo("CeruleanPokecenter", 3, 2);
         Yes();
-        ClearText(); // healed at center
-        ClearText(); // healed at center
+        ClearText();
         UseItem("TM11", "WARTORTLE", "WATER GUN");
+        
 
         TalkTo("BikeShop", 6, 3);
         No();
@@ -83,11 +81,13 @@ public class BlueTASSquirTauros : RedBlueForce {
         MoveTo("CeruleanCity", 21, 6, Action.Up);
         ClearText();
         ClearText(); // sneaky joypad call
-        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("GUST", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("QUICK ATTACK", Crit));
+        Record("blue-tas");
+        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("GUST", Crit | 30));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("QUICK ATTACK", 39));
         ForceTurn(new RbyTurn("MEGA PUNCH"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+        ForceTurn(new RbyTurn("MEGA PUNCH"));
+        ForceTurn(new RbyTurn("MEGA PUNCH", Miss), new RbyTurn("VINE WHIP", Crit));
+        ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
 
         // NUGGET BRIDGE #1
         TalkTo("Route24", 11, 31);
@@ -96,53 +96,53 @@ public class BlueTASSquirTauros : RedBlueForce {
 
         // NUGGET BRIDGE #2
         TalkTo(10, 28);
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // NUGGET BRIDGE #3
         TalkTo(11, 25);
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // NUGGET BRIDGE #4
         TalkTo(10, 22);
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
         ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // NUGGET BRIDGE #5
         TalkTo(11, 19);
         ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
-        // NUGGET BRIDGE #5
+        // NUGGET Rocket
         MoveTo(10, 15);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // HIKER
-        MoveTo("Route25", 14, 7);
+        TalkTo("Route25", 8, 4);
         ClearText();
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLE"));
 
         // LASS
         TalkTo(18, 8, Action.Down);
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // JR TRAINER
         MoveTo(24, 6);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        TeachLevelUpMove("POISON STING");
+        ForceTurn(new RbyTurn("BUBBLE", Crit));
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // ODDISH GIRL
         TalkTo(37, 4);
-        MoveSwap("BUBBLEBEAM", "THRASH");
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("MEGA PUNCH"));
+        ForceTurn(new RbyTurn("BUBBLE", Crit));
+        ForceTurn(new RbyTurn("MEGA PUNCH"));
+        TeachLevelUpMove("TACKLE");
 
         TalkTo("BillsHouse", 6, 5, Action.Right);
         Yes();
