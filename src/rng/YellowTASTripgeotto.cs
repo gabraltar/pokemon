@@ -1,6 +1,4 @@
-using System.IO;
-
-public class BlueTASSquirTauros : RedBlueForce {
+public class YellowTASTripgeotto : YellowForce {
 
     // TODO:
     //  - TAS menu execution
@@ -10,73 +8,172 @@ public class BlueTASSquirTauros : RedBlueForce {
     //  - Better pathfinding
     //    > Make pathfinding consider turn frames (last moon room/post underground elixer house)
 
-    public BlueTASSquirTauros() : base("roms/pokeblue.gbc", true) {
-        // NOTE: Record requires ffmpeg.exe to be in PATH, it will output to movies/video.mp4, movies/audio.mp3, stitch the two together and save to movies/blue-tas.mp4
-        if (!Directory.Exists("movies")) Directory.CreateDirectory("movies");
+    public YellowTASTripgeotto() : base("roms/pokeyellow.gbc", true) {
         Show();
-        LoadState(File.ReadAllBytes("basesaves/squirtaurosPostBill.sav"));
+        Record("yellow-tas");
 
-        //Note: you may start after the playback of an existing bk2:
-        /*
-            Parameter #1: file path to the bk2 file
-            Parameter #2: frame count to playback up to [Optional, if omitted the entire bk2 will be played back]
-        */
-        /* PlayBizhawkMovie("bizhawk/blue_321313.bk2", 47349);
+        PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 25604);
+        ForceTurn(new RbyTurn("THUNDERSHOCK", Crit | Effect), new RbyTurn("SAND-ATTACK", Miss));
+        ForceTurn(new RbyTurn("THUNDERSHOCK", Crit), new RbyTurn("GUST", Crit));
+        Yes();
+        ChooseMenuItem(1);
+        ClearText();
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("SAND-ATTACK", Miss));
+        MoveTo(22,9);
 
-        MoveTo(61,27,6);
-        MoveTo(61,27,5);
-        ForceEncounter(Action.Right, 6, 0xf6ef);
+        ForceEncounter(Action.Left, 9, 0xE000);
+        ClearText();
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("GUST"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("GUST"));
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("SAND-ATTACK", Miss));
+
+        ForceEncounter(Action.Left, 9, 0x0000);
+        ClearText();
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+
+        // WEEDLE GUY
+        TalkTo(2, 19);
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TACKLE", Crit | 1));
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("STRING SHOT", Miss));
+
+        MoveTo(1,14);
+        ForceEncounter(Action.Up, 4, 0xffff);
+        ClearText();
         ForceYoloball();
         ClearText();
-        No();
-        PickupItem();
-        MoveTo(60,17,11);
-        UseItem("TM01", "SQUIRTLE", "TAIL WHIP");
+        No(); // pidgey caught
+        RunUntil("JoypadOverworld");
+        MoveTo(1,0);
+        MoveTo(5,0);
+
+        
+        TalkTo("PewterGym", 3, 6);
+        // BROCK
+        TalkTo("PewterGym", 4, 1);
+        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("TACKLE", Miss));
+        ForceTurn(new RbyTurn("BUBBLE"));
+        ForceTurn(new RbyTurn("BUBBLE", Crit | 38), new RbyTurn("SCREECH", Miss));
+        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("TACKLE", Crit | 38));
+        ChooseMenuItem(1);
+        ClearText();
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("TACKLE", 38));
+
+        TalkTo("PewterMart", 1, 5);
+        /*
+            Works exactly like Buy.
+        */
+        Sell("TM34", 1);
+        Buy("ESCAPE ROPE", 7);
+
+        // ROUTE 3 TRAINER 1
+        MoveTo("Route3", 11, 6);
+        ClearText();
+        ForceTurn(new RbyTurn("LEER"), new RbyTurn("TACKLE", 38));
+        MoveSwap("LEER", "HORN ATTACK");
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("TACKLE", 38));
+        ForceTurn(new RbyTurn("HORN ATTACK"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TACKLE", 39));
+        ForceTurn(new RbyTurn("HORN ATTACK"));
+
+        // ROUTE 3 TRAINER 2
+        TalkTo(14, 4);
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("TAIL WHIP", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TAIL WHIP", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("LEER", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+
+        // ROUTE 3 TRAINER 3
+        TalkTo(19, 5);
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("HARDEN"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("HARDEN"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+
+        // ROUTE 3 TRAINER 4
+        TalkTo(24, 6);
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("TACKLE", 38));
+        ForceTurn(new RbyTurn("HORN ATTACK"));
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("HARDEN"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+
+        /*
+            Works like TalkTo, but picks up the item at the specified coordinates instead.
+        */
+        PickupItemAt("MtMoon1F", 2, 2); // moonstone
 
         // MOON ROCKET
         TalkTo("MtMoonB2F", 11, 16);
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("TACKLE", 39));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
-        Evolve();
-        
+        ForceTurn(new RbyTurn("POISON STING"), new RbyTurn("TAIL WHIP", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TAIL WHIP", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SUPERSONIC", Miss));
+        ForceTurn(new RbyTurn("TACKLE"));
+
         // SUPER NERD
         MoveTo(13, 8);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("DISABLE", Miss));
-        ForceTurn(new RbyTurn("WATER GUN", Crit));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("SCREECH", Miss));
-        ForceTurn(new RbyTurn("WATER GUN", Crit), new RbyTurn("SMOG", Miss));
-        ForceTurn(new RbyTurn("BUBBLE"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("POUND", 1));
+        ForceTurn(new RbyTurn("HORN ATTACK"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCREECH", Miss));
+        ForceTurn(new RbyTurn("POISON STING"), new RbyTurn("SCREECH", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("SMOG", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
 
+        /*
+            Skips past the evolution.
+        */
+        Evolve(); // evolution
         TalkTo(13, 6);
         Yes();
         ClearText(); // helix fossil picked up
 
-        TalkTo("BikeShop", 6, 3);
-        No();
-        ClearText(); // got instant text
-
-        // MISTY MINION
-        MoveTo("CeruleanGym", 5, 3);
+        MoveTo("Route4", 72, 14);
+        ForceEncounter(Action.Right, 9, 0x0000);
         ClearText();
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("PECK"));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
-
-        // MISTY
-        TalkTo(4, 2);
-        ForceTurn(new RbyTurn("MEGA PUNCH"), new RbyTurn("TACKLE", Miss));
-        ForceTurn(new RbyTurn("MEGA PUNCH"), new RbyTurn("TACKLE", Miss));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("TACKLE", Miss));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("TACKLE", Miss));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("TACKLE", Miss));
+        ForceYoloball();
+        ClearText();
+        No(); // sandshrew caught
 
         TalkTo("CeruleanPokecenter", 3, 2);
         Yes();
-        ClearText();
-        UseItem("TM11", "WARTORTLE", "WATER GUN");
-        
+        ClearText(); // healed at center
 
-        TalkTo("BikeShop", 6, 3);
+        MoveTo("CeruleanGym", 4, 10);
+
+        /*
+            Swaps pokemon #1 with pokemon #2.
+        */
+        PartySwap("NIDORINO", "SQUIRTLE");
+        /*
+            Uses the specified item.
+                Parameter #1: name of the item
+                Parameter #2: name of the pokemon to use the item on [Optional]
+                Parameter #3: name of the move to use the item on [Optional, currently only used for teaching TMs/HMs]
+        */
+        UseItem("MOON STONE", "NIDORINO");
+
+        // MISTY MINION
+        MoveTo(5, 3);
+        ClearText();
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TAIL WHIP", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+
+        // MISTY
+        TalkTo(4, 2);
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("WATER GUN", Miss));
+        ForceTurn(new RbyTurn("POISON STING"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("BUBBLEBEAM", 20));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("WATER GUN", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("WATER GUN", Miss));
+
+        MoveTo("BikeShop", 2, 6);
+        UseItem("TM11", "NIDOKING", "TACKLE");
+
+        TalkTo(6, 3);
         No();
         ClearText(); // got instant text
 
@@ -84,13 +181,12 @@ public class BlueTASSquirTauros : RedBlueForce {
         MoveTo("CeruleanCity", 21, 6, Action.Up);
         ClearText();
         ClearText(); // sneaky joypad call
-        Record("blue-tas");
-        ForceTurn(new RbyTurn("BUBBLE"), new RbyTurn("GUST", Crit | 30));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("QUICK ATTACK", 39));
-        ForceTurn(new RbyTurn("MEGA PUNCH"));
-        ForceTurn(new RbyTurn("MEGA PUNCH"));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Miss), new RbyTurn("VINE WHIP", Crit));
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("GUST", 1));
+        MoveSwap("HORN ATTACK", "BUBBLEBEAM");
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("POISON STING", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit));
 
         // NUGGET BRIDGE #1
         TalkTo("Route24", 11, 31);
@@ -99,53 +195,53 @@ public class BlueTASSquirTauros : RedBlueForce {
 
         // NUGGET BRIDGE #2
         TalkTo(10, 28);
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // NUGGET BRIDGE #3
         TalkTo(11, 25);
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // NUGGET BRIDGE #4
         TalkTo(10, 22);
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
         ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // NUGGET BRIDGE #5
         TalkTo(11, 19);
         ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
-        // NUGGET Rocket
+        // NUGGET BRIDGE #5
         MoveTo(10, 15);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // HIKER
-        TalkTo("Route25", 8, 4);
+        MoveTo("Route25", 14, 7);
         ClearText();
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLE"));
 
         // LASS
         TalkTo(18, 8, Action.Down);
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
         // JR TRAINER
         MoveTo(24, 6);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLE", Crit));
+        ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        TeachLevelUpMove("POISON STING");
         ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
         // ODDISH GIRL
         TalkTo(37, 4);
-        ForceTurn(new RbyTurn("MEGA PUNCH"));
-        ForceTurn(new RbyTurn("BUBBLE", Crit));
-        ForceTurn(new RbyTurn("MEGA PUNCH"));
-        TeachLevelUpMove("TACKLE");
+        MoveSwap("BUBBLEBEAM", "THRASH");
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
 
         TalkTo("BillsHouse", 6, 5, Action.Right);
         Yes();
@@ -158,28 +254,25 @@ public class BlueTASSquirTauros : RedBlueForce {
         No();
         ClearText(); // got instant text
 
-        File.WriteAllBytes("basesaves/squirtaurosPostBill.sav",SaveState()); */
-
         // DIG ROCKET
         MoveTo("CeruleanCity", 30, 9);
         ClearText();
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        MoveSwap("BUBBLEBEAM", "BITE");
-        ForceTurn(new RbyTurn("BITE", Crit));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
 
         PickupItemAt("UndergroundPathNorthSouth", 3, 4); // full restore
 
         // ROUTE 6 #1
         TalkTo("Route6", 11, 30, Action.Down);
-        ForceTurn(new RbyTurn("BITE", Crit));
-        ForceTurn(new RbyTurn("BITE", Crit));
-        ForceTurn(new RbyTurn("BITE", Crit));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
 
         // ROUTE 6 #2
         MoveTo(10, 31);
         ClearText();
-        ForceTurn(new RbyTurn("BITE", Crit));
-        ForceTurn(new RbyTurn("BITE", Crit));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
 
         MoveTo("VermilionCity", 18, 30);
         ClearText();
@@ -187,12 +280,10 @@ public class BlueTASSquirTauros : RedBlueForce {
         // RIVAL 3
         MoveTo("SSAnne2F", 37, 8, Action.Up);
         ClearText();
-        ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
-        ForceTurn(new RbyTurn("BITE", Crit));
-        ForceTurn(new RbyTurn("BITE", Crit), new RbyTurn("CONFUSION", 1));
-        ForceTurn(new RbyTurn("BITE"));
-        ForceTurn(new RbyTurn("BITE", Crit));
-
+        ForceTurn(new RbyTurn("THRASH", Crit), new RbyTurn("QUICK ATTACK", Crit | 20));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH"));
+        ForceTurn(new RbyTurn("THRASH", Crit));
 
         TalkTo("SSAnneCaptainsRoom", 4, 2); // hm02 received
 
