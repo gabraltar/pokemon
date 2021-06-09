@@ -1,4 +1,4 @@
-public class YellowTASTripgeotto : YellowForce {
+public class YellowTASCurrent : YellowForce {
 
     // TODO:
     //  - TAS menu execution
@@ -8,35 +8,31 @@ public class YellowTASTripgeotto : YellowForce {
     //  - Better pathfinding
     //    > Make pathfinding consider turn frames (last moon room/post underground elixer house)
 
-    public YellowTASTripgeotto() : base(true) {
+    public YellowTASCurrent() : base(true) {
         Show();
-        Record("yellow-tas");
+        Record("yellow-tas-current");
 
         PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 25604);
-        ForceTurn(new RbyTurn("THUNDERSHOCK", Crit | SideEffect), new RbyTurn("SAND-ATTACK", Miss));
+        ForceTurn(new RbyTurn("THUNDERSHOCK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+        ForceTurn(new RbyTurn("THUNDERSHOCK", Crit), new RbyTurn("SAND-ATTACK", Miss));
         ForceTurn(new RbyTurn("THUNDERSHOCK", Crit), new RbyTurn("GUST", Crit));
         Yes();
         ChooseMenuItem(1);
         ClearText();
-        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("SAND-ATTACK", Miss));
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("GUST", Crit));
         MoveTo(22,9);
 
-        ForceEncounter(Action.Left, 9, 0xE000);
-        ClearText();
-        MoveSwap("LEER", "HORN ATTACK");
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("GUST"));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("GUST"));
-        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("SAND-ATTACK", Miss));
-
-        ForceEncounter(Action.Left, 9, 0x0000);
-        ClearText();
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+        TalkTo(13,17);
+        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("TACKLE", 38));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("STRING SHOT"));
 
         // WEEDLE GUY
         TalkTo(2, 19);
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("TACKLE", Crit | 1));
-        ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
 
         MoveTo(1,14);
         ForceEncounter(Action.Up, 4, 0xffff);
@@ -44,12 +40,11 @@ public class YellowTASTripgeotto : YellowForce {
         ForceYoloball("POKE BALL");
         ClearText();
         No(); // pidgey caught
-        RunUntil("JoypadOverworld");
-        MoveTo(1,0);
-        MoveTo(5,0);
-
         
         TalkTo("PewterGym", 3, 6);
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCRATCH", 38));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCRATCH", Miss));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCRATCH"));
         // BROCK
         TalkTo("PewterGym", 4, 1);
         ForceTurn(new RbyTurn("DOUBLE KICK"), new RbyTurn("TACKLE", Miss));
@@ -57,14 +52,6 @@ public class YellowTASTripgeotto : YellowForce {
         ForceTurn(new RbyTurn("DOUBLE KICK", Crit | 1), new RbyTurn("BIDE"));
         ForceTurn(new RbyTurn("DOUBLE KICK", Crit | 20), new RbyTurn("BIDE"));
 
-        TalkTo("PewterMart", 1, 5);
-        /*
-            Works exactly like Buy.
-        */
-        Sell("TM34", 1);
-        Buy("ESCAPE ROPE", 7);
-
-        // ROUTE 3 TRAINER 1
         MoveTo("Route3", 11, 6);
         ClearText();
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT"));
@@ -80,19 +67,21 @@ public class YellowTASTripgeotto : YellowForce {
         // ROUTE 3 TRAINER 3
         TalkTo(19, 5);
         ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("STRING SHOT"));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("Harden"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("HARDEN"));
         ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("STRING SHOT"));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("Harden"));
-        Evolve();
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("HARDEN"));
 
         // ROUTE 3 TRAINER 4
         TalkTo(24, 6);
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT"));
-        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("Harden"));
+        ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("HARDEN"));
+        ForceTurn(new RbyTurn("DOUBLE KICK"), new RbyTurn("HARDEN"));
+        Evolve();
         /*
             Works like TalkTo, but picks up the item at the specified coordinates instead.
         */
         PickupItemAt("MtMoon1F", 2, 2); // moonstone
+        Dispose();
 
         // MOON ROCKET
         TalkTo("MtMoonB2F", 11, 16);
