@@ -1014,6 +1014,10 @@ public class RbyForce : Rby {
             case "ItemUsePPRestore":
                 if(!InBattle) ChooseMenuItem(0); // USE
                 ChooseMenuItem(target1);
+                if (item.Name.Contains("ETHER")) {
+                    ClearText();
+                    ChooseMenuItem(target2 + 1);
+                }
                 RunUntil("ManualTextScroll");
                 Inject(Joypad.B);
                 if(!InBattle) {

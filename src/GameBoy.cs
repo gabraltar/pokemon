@@ -288,8 +288,8 @@ public partial class GameBoy : IDisposable {
 
     // Helper function that creates a basic scene graph with a video buffer component.
     public void Show() {
-        Scene s = new Scene(this, 160, 144);
-        s.AddComponent(new VideoBufferComponent(0, 0, 160, 144));
+        Scene s = new Scene(this, 320, 288);
+        s.AddComponent(new VideoBufferComponent(0, 0, 320, 288));
         SetSpeedupFlags(SpeedupFlags.NoSound);
     }
 

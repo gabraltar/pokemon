@@ -5,7 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="OpenGL.Net" Version="1.0.304"/>
+    <PackageReference Include="OpenGL.Net" Version="1.0.304" NoWarn="NU1701"/>
     <PackageReference Include="SDL2-CS.NetCore" Version="2.0.8"/>
   </ItemGroup>
 </Project>

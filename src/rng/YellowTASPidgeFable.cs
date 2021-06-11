@@ -10,14 +10,19 @@ public class YellowTASPidgeFable : YellowForce {
 
     public YellowTASPidgeFable() : base(true) {
         Show();
-        ClearCache();
-        Record("yellowPidgeottoMain");
+        //ClearCache();
+        //Record("yellowPidgeottoMainToKoga");
 
         CacheState("bk2", () => {
-            PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 22306);
+            PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 19323);
         });
 
         CacheState("forest", () => {
+            RunUntil("JoypadOverworld");
+            TalkTo(1,5);
+            Buy("POKE BALL", 4);
+            MoveTo(1,19,9);
+            ClearText();
             MoveTo(51,25,27);
             ForceEncounter(Action.Up, 9, 0xF097);
             ClearText();
@@ -66,6 +71,8 @@ public class YellowTASPidgeFable : YellowForce {
         });
 
         CacheState("route3", () => {
+            TalkTo(56,1,5);
+            Buy("ESCAPE ROPE", 6);
             // ROUTE 3 BC 1
             MoveTo("Route3", 11, 6);
             ClearText();
@@ -93,10 +100,12 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("GUST", Crit), new RbyTurn("Harden"));
         });
 
+        //ClearCache();
+
         CacheState("mtmoon", () => {
             // Clefairy and Mega Punch
             MoveTo(61,28,6);
-            ForceEncounter(Action.Right, 9, 0xE0DD);
+            ForceEncounter(Action.Right, 9, 0xE4DF);
             ClearText();
             ForceYoloball("POKE BALL");
             ClearText();
@@ -130,9 +139,12 @@ public class YellowTASPidgeFable : YellowForce {
         });
 
         //ClearCache();
+        //Record("yellowTASMisty");
 
         CacheState("misty", () => {
-            TalkTo("CeruleanPokecenter", 13, 4, Action.Up);
+            MoveTo("CeruleanPokecenter", 13, 4);
+            Press(Joypad.Up,Joypad.A);
+            ClearText();
             // TODO: PC functions
             ChooseMenuItem(0);
             ClearText();
@@ -142,7 +154,7 @@ public class YellowTASPidgeFable : YellowForce {
             ClearText();
             MenuPress(Joypad.B);
             MenuPress(Joypad.B);
-
+            RunUntil("JoypadOverworld");
             TalkTo("CeruleanPokecenter", 3, 2);
             Yes();
             ClearText(); // healed at center
@@ -161,6 +173,8 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("MEGA PUNCH", Crit), new RbyTurn("BUBBLEBEAM", Crit | 20));
         });
 
+        //ClearCache();
+
         CacheState("nuggetbridge", () => {
             //Record("yellowPidgeottoMainNuggetBridge");
             UseItem("TM11", "CLEFABLE", "GROWL");
@@ -172,29 +186,29 @@ public class YellowTASPidgeFable : YellowForce {
             MoveSwap("MEGA PUNCH", "BUBBLEBEAM");
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("LEER", Miss));
             ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("POUND", Crit), new RbyTurn("TAIL WHIP"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
             ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
 
             // NUGGET BRIDGE #1
             TalkTo("Route24", 11, 31);
-            ForceTurn(new RbyTurn("POUND", Crit));
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
             // NUGGET BRIDGE #2
             TalkTo(10, 28);
-            ForceTurn(new RbyTurn("POUND", Crit), new RbyTurn("SAND-ATTACK"));
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
             ClearText();
 
             // NUGGET BRIDGE #3
             TalkTo(11, 25);
-            ForceTurn(new RbyTurn("POUND"), new RbyTurn("QUICK ATTACK", Crit | 1));
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"), new RbyTurn("QUICK ATTACK", Crit | 1));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
             ForceTurn(new RbyTurn("POUND", Crit));
 
             // NUGGET BRIDGE #4
             TalkTo(10, 22);
-            ForceTurn(new RbyTurn("POUND", Crit), new RbyTurn("SAND-ATTACK"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
             // NUGGET BRIDGE #5
@@ -238,11 +252,14 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("MEGA PUNCH"));
             PickupItemAt(38, 3);
 
+            debugPP(PartyMon1);
+            MoveTo("BillsHouse", 4, 5);
+            UseItem("ETHER", "CLEFABLE", "BUBBLEBEAM");
+
             TalkTo("BillsHouse", 6, 5, Action.Right);
             Yes();
             ClearText();
             TalkTo(1, 4);
-            TalkTo(4, 4);
         });
 
         //ClearCache();
@@ -267,7 +284,7 @@ public class YellowTASPidgeFable : YellowForce {
             MoveTo(10, 31);
             ClearText();
             ForceTurn(new RbyTurn("POUND"));
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("POUND", Crit), new RbyTurn("QUICK ATTACK", Crit | 15));
 
             MoveTo("VermilionCity", 18, 30);
             ClearText();
@@ -287,8 +304,8 @@ public class YellowTASPidgeFable : YellowForce {
             ClearText(); // watch cutscene
 
             MoveTo("VermilionCity", 15, 17, Action.Down);
+            ItemSwap("TM34", "ESCAPE ROPE");
             UseItem("HM01", "CHARMANDER");
-            UseItem("TM28", "CHARMANDER");
             Cut();
 
             MoveTo("VermilionGym", 4, 9);
@@ -299,8 +316,8 @@ public class YellowTASPidgeFable : YellowForce {
 
             // SURGE
             TalkTo(5, 1);
-            ForceTurn(new RbyTurn("MEGA PUNCH"), new RbyTurn("GROWL", Miss));
-            ForceTurn(new RbyTurn("MEGA PUNCH"), new RbyTurn("GROWL", Miss));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", SideEffect), new RbyTurn("GROWL", Miss));
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
         });
 
         //ClearCache();
@@ -308,25 +325,25 @@ public class YellowTASPidgeFable : YellowForce {
         
         CacheState("yellowRockTunnel", () => {
             CutAt("VermilionCity", 15, 18);
-            Dispose();
             TalkTo("PokemonFanClub", 3, 1);
             Yes();
             ClearText();
-            MoveTo(2,7);
-            RunUntil("JoypadOverworld");
-            Press(Joypad.Down);
-            RunUntil("JoypadOverworld");
+            MoveTo(5,19,14);
+            TalkTo(19,15);
+            ClearText();
+            Yes();
+            ClearText();
+            No();
+            ClearText();
             MoveTo(85,2,7);
-            UseOverworldMove("DIG"); // Escape rope to cerulean
-            RunUntil("JoypadOverworld");
-            Press(Joypad.Down);
+            UseItem("ESCAPE ROPE");
             RunUntil("JoypadOverworld");
 
             TalkTo("BikeShop", 6, 3);
 
             MoveTo("CeruleanCity", 13, 26);
             ItemSwap("POKE BALL", "BICYCLE");
-            UseItem("TM24", "CLEFABLE", "SING");
+            UseItem("TM24", "CLEFABLE", "POUND");
             UseItem("BICYCLE");
 
             /*
@@ -337,16 +354,16 @@ public class YellowTASPidgeFable : YellowForce {
 
             // 4 TURN THRASH
             TalkTo(13, 10);
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
 
             // BUG CATCHER
             TalkTo(40, 8);
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
 
             // POKEMANIAC #1
             TalkTo("RockTunnel1F", 23, 8);
@@ -359,23 +376,24 @@ public class YellowTASPidgeFable : YellowForce {
 
             // ODDISH GIRL
             TalkTo(14, 28);
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
 
             // HIKER
             TalkTo(6, 10);
-            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("SELFDESTRUCT", Miss));
-            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("SELFDESTRUCT", Miss));
-            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("SELFDESTRUCT", Miss));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
             // PIDGEY GIRL
             TalkTo("RockTunnel1F", 22, 24);
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"));
-            ForceTurn(new RbyTurn("THRASH"), new RbyTurn("QUICK ATTACK", 38));
+            MoveSwap("BUBBLEBEAM", "THUNDERBOLT");
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
 
-            // GAMBLER
-            TalkTo("Route8", 46, 13);
+            // DOUBLE CLEFAIRY
+            TalkTo("Route8", 51, 11);
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
 
@@ -388,7 +406,7 @@ public class YellowTASPidgeFable : YellowForce {
             UseItem("BICYCLE");
 
             TalkTo("CeladonMart2F", 7, 3);
-            Buy("TM07", 2);
+            Buy("TM05", 2);
 
             TalkTo("CeladonMart4F", 5, 6);
             Buy("POKE DOLL", 2);
@@ -397,13 +415,9 @@ public class YellowTASPidgeFable : YellowForce {
             ChooseMenuItem(0); // fresh water
             ClearText();
 
-            TalkTo("CeladonMart5F", 5, 4);
-            Buy("X SPEED", 3);
+            MoveTo("CeladonMart4F", 16, 2);
 
-            TalkTo("CeladonMartElevator", 3, 0);
-            ChooseMenuItem(0);
-
-            MoveTo("CeladonCity", 8, 14);
+            MoveTo("CeladonCity", 10, 14);
             UseItem("BICYCLE");
 
             CutAt("Route16", 34, 9);
@@ -412,399 +426,423 @@ public class YellowTASPidgeFable : YellowForce {
             TalkTo("Route16FlyHouse", 2, 3); // fly received
         });
 
-        MoveTo("Route16", 7, 6);
-        ItemSwap("HELIX FOSSIL", "POKE DOLL");
-        UseItem("TM07", "NIDOKING", "LEER");
-        UseItem("HM02", "PIDGEY");
-        Fly(Joypad.Down, 3);
-
-        // RIVAL 4
-        MoveTo("PokemonTower2F", 15, 5);
-        ClearText();
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-
-        // CHANNELER #1
-        TalkTo("PokemonTower4F", 15, 7);
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-
-        PickupItemAt(12, 10); // elixer
-
-        MoveTo("PokemonTower5F", 11, 9);
-        ClearText(); // heal pad
-
-        // CHANNELER #2
-        MoveTo("PokemonTower6F", 15, 5);
-        ClearText();
-        ForceTurn(new RbyTurn("THRASH"), new RbyTurn("NIGHT SHADE"));
-        ForceTurn(new RbyTurn("THRASH"), new RbyTurn("NIGHT SHADE"));
-        ForceTurn(new RbyTurn("THRASH"), new RbyTurn("NIGHT SHADE"));
-        ForceTurn(new RbyTurn("THRASH"), new RbyTurn("NIGHT SHADE"));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-
-        // CHANNELER #3
-        TalkTo("PokemonTower6F", 9, 5);
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-
-        PickupItemAt(6, 8); // rare candy
-        MoveTo(10, 16);
-        ClearText();
-        UseItem("POKE DOLL"); // escape ghost
-
-        // ROCKET #1
-        MoveTo("PokemonTower7F", 10, 11);
-        ClearText();
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-
-        // ROCKET #2
-        MoveTo(10, 9);
-        ClearText();
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-
-        // ROCKET #3
-        MoveTo(10, 7);
-        ClearText();
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH"));
-
-        TalkTo(10, 3);
-        TalkTo(3, 1);
-        ClearText(); // Pokeflute received
-
-        MoveTo("LavenderTown", 7, 10);
-        Fly(Joypad.Down, 1);
-
-        UseItem("BICYCLE");
-
-        MoveTo("Route16", 27, 10);
-        ItemSwap("POKE DOLL", "ELIXER");
-        UseItem("POKE FLUTE");
-        RunAway();
-
-        PickupItemAt("Route17", 8, 121); // max elixer
-
-        MoveTo("Route18", 40, 8);
-        UseItem("BICYCLE");
-
-        CutAt("FuchsiaCity", 18, 19);
-        CutAt(16, 11);
-        MoveTo("SafariZoneGate", 3, 2);
-        ClearText();
-        Yes();
-        ClearText();
-        ClearText(); // sneaky joypad call
-
-        UseItem("BICYCLE");
-        PickupItemAt("SafariZoneWest", 19, 7, Action.Down); // gold teeth
-
-        TalkTo("SafariZoneSecretHouse", 3, 3);
-        MoveTo("SafariZoneWest", 3, 4);
-        UseItem("ESCAPE ROPE");
-        Fly(Joypad.Down, 1);
-
-        UseItem("BICYCLE");
-
-        // JUGGLER #1
-        TalkTo("FuchsiaGym", 7, 8);
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-
-        // JUGGLER #2
-        MoveTo(1, 7);
-        ClearText();
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        // KOGA
-        TalkTo(4, 10);
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("ELIXER", "NIDOKING"), new RbyTurn("SELFDESTRUCT", Miss));
-
-        MoveTo("FuchsiaCity", 5, 28);
-        UseItem("BICYCLE");
-
-        TalkTo("WardensHouse", 2, 3);
-
-        MoveTo("FuchsiaCity", 27, 28);
-        Fly(Joypad.None, 0);
-
-        MoveTo(4, 13, Action.Down);
-        ItemSwap("NUGGET", "X SPEED");
-        UseItem("HM03", "SQUIRTLE");
-        UseItem("RARE CANDY", "NIDOKING");
-        Surf();
-
-        MoveTo("CinnabarIsland", 4, 4);
-
-        TalkTo("PokemonMansion3F", 10, 5, Action.Up);
-        ActivateMansionSwitch();
-
-        MoveTo(16, 14);
-        FallDown(); // TODO: look into not having to do this
-        TalkTo("PokemonMansionB1F", 18, 25, Action.Up);
-        ActivateMansionSwitch();
-
-        TalkTo(20, 3, Action.Up);
-        ActivateMansionSwitch();
-        PickupItemAt(5, 13); // secret key
-        UseItem("ESCAPE ROPE");
-        Fly(Joypad.Down, 3);
-
-        UseItem("BICYCLE");
-        MoveTo("Route7Gate", 3, 4);
-        ClearText();
-        MoveTo("Route7", 18, 10);
-        UseItem("BICYCLE");
-
-        PickupItemAt("SilphCo5F", 12, 3);
-
-        // ARBOK TRAINER
-        TalkTo(8, 16);
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        PickupItemAt(21, 16);
-        TalkTo(7, 13);
-        TalkTo("SilphCo3F", 17, 9);
-
-        // SILPH RIVAL
-        MoveTo("SilphCo7F", 3, 2, Action.Left);
-        ClearText();
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("QUICK ATTACK", 15));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        // SILPH ROCKET
-        TalkTo("SilphCo11F", 3, 16);
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-
-        TalkTo(6, 13, Action.Up);
-
-        // SILPH GIOVANNI
-        MoveTo(6, 13);
-        ClearText();
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        UseItem("ELIXER", "NIDOKING");
-        UseItem("ESCAPE ROPE");
-
-        Fly(Joypad.Down, 2);
-
-        UseItem("BICYCLE");
-        TalkTo("CinnabarGym", 15, 7, Action.Up);
-        BlaineQuiz(Joypad.A);
-        TalkTo(10, 1, Action.Up);
-        BlaineQuiz(Joypad.B);
-        TalkTo(9, 7, Action.Up);
-        BlaineQuiz(Joypad.B);
-        TalkTo(9, 13, Action.Up);
-        BlaineQuiz(Joypad.B);
-        TalkTo(1, 13, Action.Up);
-        BlaineQuiz(Joypad.A);
-        TalkTo(1, 7, Action.Up);
-        BlaineQuiz(Joypad.B);
-
-        // BLAINE
-        TalkTo(3, 3);
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        UseItem("ESCAPE ROPE");
-        Fly(Joypad.Down, 4);
-        UseItem("BICYCLE");
-        CutAt(35, 32);
-        CutAt("CeladonGym", 2, 4);
-
-        // BEAUTY
-        MoveTo(3, 4);
-        ClearText();
-        ForceTurn(new RbyTurn("HORN DRILL"));
-
-        // ERIKA
-        TalkTo(4, 3);
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-
-        CutAt(5, 7);
-        MoveTo("CeladonCity", 12, 28);
-        Fly(Joypad.Down, 1);
-
-        UseItem("BICYCLE");
-
-        // SABRINA
-        TalkTo("SaffronGym", 9, 8);
-        ForceTurn(new RbyTurn("THRASH"));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit));
-        ForceTurn(new RbyTurn("THRASH", Crit), new RbyTurn("PSYWAVE", 26));
-
-        MoveTo(1, 5);
-        UseItem("ESCAPE ROPE");
-        Fly(Joypad.Up, 1);
-
-        UseItem("BICYCLE");
-
-        // RHYHORN
-        MoveTo("ViridianGym", 15, 5);
-        ClearText();
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-
-        // BLACKBELT
-        MoveTo(10, 4);
-        ClearText();
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-
-        // GIOVANNI
-        MoveTo("ViridianCity", 32, 8);
-        TalkTo("ViridianGym", 2, 1);
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-
-        MoveTo("ViridianCity", 32, 8);
-        ItemSwap("S.S.TICKET", "MAX ELIXER");
-        UseItem("HM04", "SANDSHREW");
-        UseItem("TM27", "NIDOKING", "THRASH");
-        UseItem("BICYCLE");
-
-        // VIRIDIAN RIVAL
-        MoveTo("Route22", 29, 5);
-        ClearText();
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("X SPEED"), new RbyTurn("TAIL WHIP", Miss));
-        ForceTurn(new RbyTurn("BUBBLEBEAM"));
-        ForceTurn(new RbyTurn("THUNDERBOLT"));
-        ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-        ForceTurn(new RbyTurn("FISSURE"));
-        ForceTurn(new RbyTurn("FISSURE"));
-
-        MoveTo("Route22Gate", 4, 2, Action.Up);
-        ClearText();
-        MoveTo("Route23", 7, 139);
-        UseItem("BICYCLE");
-        MoveTo(7, 136, Action.Up);
-        ClearText();
-        MoveTo(9, 119, Action.Up);
-        ClearText();
-        MoveTo(10, 105, Action.Up);
-        ClearText();
-        MoveTo(10, 104, Action.Up);
-        Surf();
-        MoveTo(10, 96, Action.Up);
-        ClearText();
-        MoveTo(7, 85, Action.Up);
-        ClearText();
-        MoveTo(8, 71, Action.Up);
-        UseItem("BICYCLE");
-        MoveTo(12, 56, Action.Up);
-        ClearText();
-        MoveTo(5, 35, Action.Up);
-        ClearText();
-
-        MoveTo("VictoryRoad1F", 8, 16);
-        Strength();
-        MoveTo(5, 14);
-        PushBoulder(Joypad.Down);
-        Execute("D L D");
-        for(int i = 0; i < 4; i++) { PushBoulder(Joypad.Right); Execute("R"); }
-        Execute("D R");
-        for(int i = 0; i < 2; i++) { PushBoulder(Joypad.Up); Execute("U"); }
-        Execute("L U");
-        for(int i = 0; i < 7; i++) { PushBoulder(Joypad.Right); Execute("R"); }
-        Execute("D R");
-        PushBoulder(Joypad.Up); Execute("U");
-        PushBoulder(Joypad.Up);
-        Execute("L L U U R");
-        PushBoulder(Joypad.Right);
-        Execute("U R R");
-        PushBoulder(Joypad.Down);
-        MoveTo("VictoryRoad2F", 0, 9);
-
-        Strength();
-        MoveTo(5, 14);
-        PushBoulder(Joypad.Left);
-        Execute("U L L");
-        PushBoulder(Joypad.Down); Execute("D");
-        PushBoulder(Joypad.Down);
-        Execute("R D D");
-        PushBoulder(Joypad.Left); Execute("L");
-        PushBoulder(Joypad.Left);
-
-        MoveTo("VictoryRoad3F", 23, 6);
-        Strength();
-        MoveTo(22, 4);
-        for(int i = 0; i < 2; i++) { PushBoulder(Joypad.Up); Execute("U"); }
-        Execute("R U");
-        for(int i = 0; i < 16; i++) { PushBoulder(Joypad.Left); Execute("L"); }
-        Execute("U L");
-        PushBoulder(Joypad.Down);
-        Execute("R D D");
-        for(int i = 0; i < 4; i++) { PushBoulder(Joypad.Left); Execute("L"); }
-        Execute("U L");
-        for(int i = 0; i < 3; i++) { PushBoulder(Joypad.Down); Execute("D"); }
-        Execute("L D");
-        PushBoulder(Joypad.Right); Execute("U");
-
-        MoveTo(21, 15);
-        PushBoulder(Joypad.Right);
-        Execute("R R");
-        FallDown();
-
-        Strength();
-        UseItem("ELIXER", "NIDOKING");
-        UseItem("BICYCLE");
-        Execute("D R R U");
-        for(int i = 0; i < 14; i++) { PushBoulder(Joypad.Left); Execute("L"); }
-
-        TalkTo("IndigoPlateauLobby", 15, 8, Action.Up);
-
-        // TODO: PC functions
-        ChooseMenuItem(0);
-        ClearText();
-        for(int i = 0; i < 3; i++) {
-            ChooseMenuItem(1);
-            ChooseMenuItem(1);
+        //ClearCache();
+        //Record("yellowTASPokeFlute");
+
+        CacheState("pokeFlute", () => {
+
+            MoveTo("Route16", 7, 6);
+            ItemSwap("HELIX FOSSIL", "POKE DOLL");
+            UseItem("TM05", "CLEFABLE", "SING");
+            UseItem("HM02", "PIDGEOTTO");
+            Fly(Joypad.Down, 3);
+
+            // RIVAL 4
+            MoveTo("PokemonTower2F", 15, 5);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("LEER", Miss));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+
+            // CHANNELER #1
+            TalkTo("PokemonTower4F", 15, 7);
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+
+            PickupItemAt(12, 10); // elixer
+            debugPP(PartyMon1);
+
+            MoveTo("PokemonTower5F", 11, 9);
+            ClearText(); // heal pad
+
+            // CHANNELER #2
+            MoveTo("PokemonTower6F", 15, 5);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+
+            // CHANNELER #3
+            TalkTo("PokemonTower6F", 9, 5);
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+
+            PickupItemAt(6, 8); // rare candy
+            MoveTo(10, 16);
+            ClearText();
+            UseItem("POKE DOLL"); // escape ghost
+
+            // TOWER J&J
+            MoveTo("PokemonTower7F", 10, 12);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("GROWL", Miss));
+            ForceTurn(new RbyTurn("MEGA KICK"));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+
+            TalkTo(10, 3);
+            TalkTo(3, 1);
+            ClearText(); // Pokeflute received
+        });
+
+        //ClearCache();
+        //Record("yellowTASKoga");
+
+        CacheState("koga", () => {
+            MoveTo("LavenderTown", 7, 10);
+            Fly(Joypad.Down, 1);
+            TalkTo(133, 3, 2);
+            Yes();
+            ClearText(); // healed at center
+            MoveTo(6,41,10);
+            UseItem("BICYCLE");
+            MoveTo("Route16", 27, 10);
+            ItemSwap("POKE DOLL", "ELIXER");
+            UseItem("POKE FLUTE");
+            RunAway();
+            //ForceYoloball("POKE BALL");
+            //ClearText();
+            //No();
+
+            PickupItemAt("Route17", 8, 121); // max elixer
+
+            MoveTo("Route18", 40, 8);
+            UseItem("BICYCLE");
+
+            CutAt("FuchsiaCity", 18, 19);
+            CutAt(16, 11);
+            MoveTo("SafariZoneGate", 3, 2);
+            ClearText();
+            Yes();
+            ClearText();
+            ClearText(); // sneaky joypad call
+
+            UseItem("BICYCLE");
+            PickupItemAt("SafariZoneWest", 19, 7, Action.Down); // gold teeth
+
+            TalkTo("SafariZoneSecretHouse", 3, 3);
+            MoveTo("SafariZoneWest", 3, 4);
+            UseItem("ESCAPE ROPE");
+            Fly(Joypad.Down, 1);
+
+            UseItem("BICYCLE");
+
+            // JUGGLER #1
+            TalkTo("FuchsiaGym", 7, 8);
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("Psybeam", Crit | 20));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("Psybeam", Crit));
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+
+            // JUGGLER #2
+            MoveTo(1, 7);
+            ClearText();
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            System.Console.WriteLine(Bag.NumItems);
+
+            // KOGA
+            TalkTo(4, 10);
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT"), new RbyTurn("SLEEP POWDER", Miss));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit | SideEffect), new RbyTurn("Psychic", Miss));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            System.Console.WriteLine(EmulatedSamples/SamplesPerFrame);
+        });
+        ClearCache();
+        //Record("yellowTASMansion");
+
+        CacheState("erika", () => {
+            MoveTo("FuchsiaCity", 5, 28);
+            UseItem("BICYCLE");
+
+            TalkTo("WardensHouse", 2, 3);
+
+            MoveTo("FuchsiaCity", 27, 28);
+            Fly(Joypad.None, 0);
+
+            MoveTo(4, 13);
+            OpenStartMenu();
+            MenuPress(Joypad.Down);
+            MenuPress(Joypad.A);
+            MenuPress(Joypad.Down);
+            MenuPress(Joypad.Down);
+            MenuPress(Joypad.A);
+            MenuPress(Joypad.Down);
+            MenuPress(Joypad.A);
+            MenuPress(Joypad.A);
+            ClearText();
+            Yes();
+            ClearText();
+            UseItem("HM03", "SQUIRTLE");
+            Surf();
+
+            MoveTo("CinnabarIsland", 4, 4);
+
+            TalkTo("PokemonMansion3F", 10, 5, Action.Up);
+            ActivateMansionSwitch();
+
+            MoveTo(16, 14);
+            FallDown(); // TODO: look into not having to do this
+            TalkTo("PokemonMansionB1F", 18, 25, Action.Up);
+            ActivateMansionSwitch();
+
+            TalkTo(20, 3, Action.Up);
+            ActivateMansionSwitch();
+            PickupItemAt(5, 13); // secret key
+            UseItem("ESCAPE ROPE");
+            UseItem("BICYCLE");
+            CutAt(35, 32);
+            CutAt("CeladonGym", 2, 4);
+
+            // BEAUTY
+            MoveTo(3, 4);
+            ClearText();
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+
+            // ERIKA
+            TalkTo(4, 3);
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+        });
+
+        CacheState("blaine", () => {
+            CutAt(5, 7);
+            MoveTo("CeladonCity", 12, 28);
+
+            Fly(Joypad.Down, 1);
+            TalkTo(169,7,2);
+            MoveTo(8,6,10);
+
+            UseItem("TM35", "CLEFABLE", "MEGA PUNCH");
+            UseItem("BICYCLE");
+            TalkTo("CinnabarGym", 15, 7, Action.Up);
+            BlaineQuiz(Joypad.A);
+            TalkTo(10, 1, Action.Up);
+            BlaineQuiz(Joypad.B);
+            TalkTo(9, 7, Action.Up);
+            BlaineQuiz(Joypad.B);
+            TalkTo(9, 13, Action.Up);
+            BlaineQuiz(Joypad.B);
+            TalkTo(1, 13, Action.Up);
+            BlaineQuiz(Joypad.A);
+            TalkTo(1, 7, Action.Up);
+            BlaineQuiz(Joypad.B);
+
+            // BLAINE
+            TalkTo(3, 3);
+            ForceTurn(new RbyTurn("METRONOME", 0, "AGILITY"), new RbyTurn("TAIL WHIP", Miss));
+            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
+        });
+        CacheState("silphco", () => {
+            UseItem("ESCAPE ROPE");
+
+            UseItem("BICYCLE");
+            MoveTo("Route7Gate", 3, 4);
+            ClearText();
+            MoveTo("Route7", 18, 10);
+            UseItem("BICYCLE");
+
+            PickupItemAt("SilphCo5F", 12, 3);
+
+            // ARBOK TRAINER
+            TalkTo(8, 16);
+            ForceTurn(new RbyTurn("HORN DRILL"));
+
+            PickupItemAt(21, 16);
+            TalkTo(7, 13);
+            TalkTo("SilphCo3F", 17, 9);
+
+            // SILPH RIVAL
+            MoveTo("SilphCo7F", 3, 2, Action.Left);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("QUICK ATTACK", 15));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+
+            // SILPH ROCKET
+            TalkTo("SilphCo11F", 3, 16);
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+
+            TalkTo(6, 13, Action.Up);
+
+            // SILPH GIOVANNI
+            MoveTo(6, 13);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+
+            UseItem("ELIXER", "NIDOKING");
+            UseItem("ESCAPE ROPE");
+        });
+        CacheState("sabrina", () => {
+            UseItem("BICYCLE");
+
+            // SABRINA
+            TalkTo("SaffronGym", 9, 8);
+            ForceTurn(new RbyTurn("THRASH"));
+            ForceTurn(new RbyTurn("THRASH", Crit));
+            ForceTurn(new RbyTurn("THRASH", Crit));
+            ForceTurn(new RbyTurn("THRASH", Crit), new RbyTurn("PSYWAVE", 26));
+        });
+        CacheState("giovannigym", () => {
+            MoveTo(1, 5);
+            UseItem("ESCAPE ROPE");
+            Fly(Joypad.Up, 1);
+
+            UseItem("BICYCLE");
+
+            // RHYHORN
+            MoveTo("ViridianGym", 15, 5);
+            ClearText();
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+
+            // BLACKBELT
+            MoveTo(10, 4);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+
+            // GIOVANNI
+            MoveTo("ViridianCity", 32, 8);
+            TalkTo("ViridianGym", 2, 1);
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+        });
+        CacheState("lorelei", () => {
+            MoveTo("ViridianCity", 32, 8);
+            ItemSwap("S.S.TICKET", "MAX ELIXER");
+            UseItem("HM04", "SANDSHREW");
+            UseItem("TM27", "NIDOKING", "THRASH");
+            UseItem("BICYCLE");
+
+            // VIRIDIAN RIVAL
+            MoveTo("Route22", 29, 5);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("X SPEED"), new RbyTurn("TAIL WHIP", Miss));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("FISSURE"));
+            ForceTurn(new RbyTurn("FISSURE"));
+
+            MoveTo("Route22Gate", 4, 2, Action.Up);
+            ClearText();
+            MoveTo("Route23", 7, 139);
+            UseItem("BICYCLE");
+            MoveTo(7, 136, Action.Up);
+            ClearText();
+            MoveTo(9, 119, Action.Up);
+            ClearText();
+            MoveTo(10, 105, Action.Up);
+            ClearText();
+            MoveTo(10, 104, Action.Up);
+            Surf();
+            MoveTo(10, 96, Action.Up);
+            ClearText();
+            MoveTo(7, 85, Action.Up);
+            ClearText();
+            MoveTo(8, 71, Action.Up);
+            UseItem("BICYCLE");
+            MoveTo(12, 56, Action.Up);
+            ClearText();
+            MoveTo(5, 35, Action.Up);
+            ClearText();
+
+            MoveTo("VictoryRoad1F", 8, 16);
+            Strength();
+            MoveTo(5, 14);
+            PushBoulder(Joypad.Down);
+            Execute("D L D");
+            for(int i = 0; i < 4; i++) { PushBoulder(Joypad.Right); Execute("R"); }
+            Execute("D R");
+            for(int i = 0; i < 2; i++) { PushBoulder(Joypad.Up); Execute("U"); }
+            Execute("L U");
+            for(int i = 0; i < 7; i++) { PushBoulder(Joypad.Right); Execute("R"); }
+            Execute("D R");
+            PushBoulder(Joypad.Up); Execute("U");
+            PushBoulder(Joypad.Up);
+            Execute("L L U U R");
+            PushBoulder(Joypad.Right);
+            Execute("U R R");
+            PushBoulder(Joypad.Down);
+            MoveTo("VictoryRoad2F", 0, 9);
+
+            Strength();
+            MoveTo(5, 14);
+            PushBoulder(Joypad.Left);
+            Execute("U L L");
+            PushBoulder(Joypad.Down); Execute("D");
+            PushBoulder(Joypad.Down);
+            Execute("R D D");
+            PushBoulder(Joypad.Left); Execute("L");
+            PushBoulder(Joypad.Left);
+
+            MoveTo("VictoryRoad3F", 23, 6);
+            Strength();
+            MoveTo(22, 4);
+            for(int i = 0; i < 2; i++) { PushBoulder(Joypad.Up); Execute("U"); }
+            Execute("R U");
+            for(int i = 0; i < 16; i++) { PushBoulder(Joypad.Left); Execute("L"); }
+            Execute("U L");
+            PushBoulder(Joypad.Down);
+            Execute("R D D");
+            for(int i = 0; i < 4; i++) { PushBoulder(Joypad.Left); Execute("L"); }
+            Execute("U L");
+            for(int i = 0; i < 3; i++) { PushBoulder(Joypad.Down); Execute("D"); }
+            Execute("L D");
+            PushBoulder(Joypad.Right); Execute("U");
+
+            MoveTo(21, 15);
+            PushBoulder(Joypad.Right);
+            Execute("R R");
+            FallDown();
+
+            Strength();
+            UseItem("ELIXER", "NIDOKING");
+            UseItem("BICYCLE");
+            Execute("D R R U");
+            for(int i = 0; i < 14; i++) { PushBoulder(Joypad.Left); Execute("L"); }
+
+            TalkTo("IndigoPlateauLobby", 15, 8, Action.Up);
+
+            // TODO: PC functions
             ChooseMenuItem(0);
             ClearText();
-        }
-        MenuPress(Joypad.B);
-        MenuPress(Joypad.B);
+            for(int i = 0; i < 3; i++) {
+                ChooseMenuItem(1);
+                ChooseMenuItem(1);
+                ChooseMenuItem(0);
+                ClearText();
+            }
+            MenuPress(Joypad.B);
+            MenuPress(Joypad.B);
 
-        // LORELEI
-        MoveTo("IndigoPlateauLobby", 8, 0);
-        TalkTo("LoreleisRoom", 5, 2, Action.Right);
-        ClearText();
-        ForceTurn(new RbyTurn("FISSURE"));
-        ForceTurn(new RbyTurn("FISSURE"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
-        ForceTurn(new RbyTurn("HORN DRILL"));
+            // LORELEI
+            MoveTo("IndigoPlateauLobby", 8, 0);
+            TalkTo("LoreleisRoom", 5, 2, Action.Right);
+            ClearText();
+            ForceTurn(new RbyTurn("FISSURE"));
+            ForceTurn(new RbyTurn("FISSURE"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("HORN DRILL"));
+        });
 
         // BRUNO
         Execute("U U U");
@@ -853,5 +891,11 @@ public class YellowTASPidgeFable : YellowForce {
         ClearText();
 
         Dispose();
+    }
+
+    void debugPP(RbyPokemon pokemon) {
+        for (int i = 0; i < 4; i++) {
+            System.Console.WriteLine(PartyMon1.Moves[i].Name + " " + PartyMon1.PP[i].ToString());
+        }
     }
 }
