@@ -1197,7 +1197,7 @@ public class RbyForce : Rby {
 
     public void PushBoulder(Joypad joypad) {
         int encounterCheck = SYM["TryDoWildEncounter.CanEncounter"] + 3;
-        while(Hold(joypad, SYM["UpdateNPCSprite"] + 0x70, encounterCheck) == encounterCheck) {
+        while(Hold(joypad, SYM["UpdateNPCSprite"] + 0x77, encounterCheck) == encounterCheck) {
             A = 0xff;
             RunFor(1);
         }
