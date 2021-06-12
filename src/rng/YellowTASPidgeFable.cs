@@ -550,7 +550,7 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("MEGA KICK", Crit));
             System.Console.WriteLine(EmulatedSamples/SamplesPerFrame);
         });
-        ClearCache();
+        //ClearCache();
         //Record("yellowTASMansion");
 
         CacheState("erika", () => {
@@ -611,7 +611,7 @@ public class YellowTASPidgeFable : YellowForce {
         CacheState("blaine", () => {
             CutAt(5, 7);
             MoveTo("CeladonCity", 12, 28);
-
+            UseItem("MAX ELIXER", "CLEFABLE");
             Fly(Joypad.Down, 1);
             TalkTo(169,7,2);
             MoveTo(8,6,10);
@@ -633,16 +633,20 @@ public class YellowTASPidgeFable : YellowForce {
 
             // BLAINE
             TalkTo(3, 3);
-            ForceTurn(new RbyTurn("METRONOME", 0, "AGILITY"), new RbyTurn("TAIL WHIP", Miss));
-            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
-            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
-            ForceTurn(new RbyTurn("METRONOME", 0, "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("TAIL WHIP", Miss));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
         });
+
+        //ClearCache();
+        //Record("yellowTASSilph");
+
         CacheState("silphco", () => {
             UseItem("ESCAPE ROPE");
 
             UseItem("BICYCLE");
-            MoveTo("Route7Gate", 3, 4);
+            MoveTo("Route7Gate", 3, 3);
             ClearText();
             MoveTo("Route7", 18, 10);
             UseItem("BICYCLE");
@@ -651,7 +655,7 @@ public class YellowTASPidgeFable : YellowForce {
 
             // ARBOK TRAINER
             TalkTo(8, 16);
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
 
             PickupItemAt(21, 16);
             TalkTo(7, 13);
@@ -660,17 +664,18 @@ public class YellowTASPidgeFable : YellowForce {
             // SILPH RIVAL
             MoveTo("SilphCo7F", 3, 2, Action.Left);
             ClearText();
-            ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("QUICK ATTACK", 15));
-            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit), new RbyTurn("TAIL WHIP"));
+            ForceTurn(new RbyTurn("MEGA KICK"));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
 
-            // SILPH ROCKET
-            TalkTo("SilphCo11F", 3, 16);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            // SILPH J&J
+            MoveTo("SilphCo11F", 3, 3);
+            ClearText();
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
 
             TalkTo(6, 13, Action.Up);
 
@@ -678,23 +683,31 @@ public class YellowTASPidgeFable : YellowForce {
             MoveTo(6, 13);
             ClearText();
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("BITE"));
             ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", 1), new RbyTurn("Tail Whip", Miss));
+            ForceTurn(new RbyTurn("BUBBLEBEAM"));
 
-            UseItem("ELIXER", "NIDOKING");
             UseItem("ESCAPE ROPE");
         });
+
+        //ClearCache();
+
         CacheState("sabrina", () => {
+            UseItem("BICYCLE");
+            MoveTo("Route7", 18, 10);
             UseItem("BICYCLE");
 
             // SABRINA
             TalkTo("SaffronGym", 9, 8);
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("FLASH", Miss));
+            ForceTurn(new RbyTurn("METRONOME", "THRASH"));
             ForceTurn(new RbyTurn("THRASH"));
             ForceTurn(new RbyTurn("THRASH", Crit));
-            ForceTurn(new RbyTurn("THRASH", Crit));
-            ForceTurn(new RbyTurn("THRASH", Crit), new RbyTurn("PSYWAVE", 26));
         });
+
+        ClearCache();
+
         CacheState("giovannigym", () => {
             MoveTo(1, 5);
             UseItem("ESCAPE ROPE");
@@ -711,21 +724,23 @@ public class YellowTASPidgeFable : YellowForce {
             MoveTo(10, 4);
             ClearText();
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
+            ForceTurn(new RbyTurn("THUNDERBOLT"));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
 
             // GIOVANNI
             MoveTo("ViridianCity", 32, 8);
             TalkTo("ViridianGym", 2, 1);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("FISSURE", Miss));
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
             ForceTurn(new RbyTurn("BUBBLEBEAM"));
         });
+
         CacheState("lorelei", () => {
             MoveTo("ViridianCity", 32, 8);
-            ItemSwap("S.S.TICKET", "MAX ELIXER");
+            UseItem("ELIXER", "CLEFABLE");
             UseItem("HM04", "SANDSHREW");
             UseItem("TM27", "NIDOKING", "THRASH");
             UseItem("BICYCLE");
@@ -896,6 +911,12 @@ public class YellowTASPidgeFable : YellowForce {
     void debugPP(RbyPokemon pokemon) {
         for (int i = 0; i < 4; i++) {
             System.Console.WriteLine(PartyMon1.Moves[i].Name + " " + PartyMon1.PP[i].ToString());
+        }
+    }
+
+    void debugBag(RbyBag bag) {
+        for (int i = 0; i < bag.NumItems; i++) {
+            System.Console.WriteLine(bag.Items[i].Item.Name);
         }
     }
 }

@@ -214,6 +214,10 @@ public class RbyForce : Rby {
                     A = 0;
                 } else if(address.StartsWith("ApplyAttackToPlayerPokemon.loop")) { // psywave damage
                     A = turn.Flags & 0x3f;
+                } else if(address.StartsWith("MetronomePickMove")) {
+                    RbyMove move = Moves[turn.MetronomeMove];
+                    Debug.Assert(move != null, "Unable to find the move: " + turn.MetronomeMove);
+                    A = move.Id;
                 } else {
                     Console.WriteLine("Unhandled Random call coming from " + address);
                 }
@@ -961,7 +965,7 @@ public class RbyForce : Rby {
     public void UseItem(RbyItem item, int target1 = -1, int target2 = -1) {
         OpenBag();
 
-        ChooseListItem(Bag.IndexOf(item));
+        ChooseListItem(FindItem(item.Name));
 
         switch(item.ExecutionPointerLabel) {
             case "ItemUseEvoStone": // Can only be used outside of battle
@@ -1014,7 +1018,7 @@ public class RbyForce : Rby {
             case "ItemUsePPRestore":
                 if(!InBattle) ChooseMenuItem(0); // USE
                 ChooseMenuItem(target1);
-                if (item.Name.Contains("ETHER")) {
+                if(item.Name.Contains("ETHER")) {
                     ClearText();
                     ChooseMenuItem(target2 + 1);
                 }

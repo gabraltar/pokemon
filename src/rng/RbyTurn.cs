@@ -1,8 +1,8 @@
 public class RbyTurn {
 
     public string Move;
-    public string MetronomeMove;
     public string Pokemon;
+    public string MetronomeMove;
     public int Flags;
 
     public RbyTurn(string move, int flags = 0) {
@@ -17,11 +17,6 @@ public class RbyTurn {
     public RbyTurn(string item, string pokemon) {
         Move = item;
         Pokemon = pokemon;
-    }
-
-    public RbyTurn(string move, int flags = 0, string metronomeMove) {
-        Move = move.ToUpper();
-        Flags = flags;
-        MetronomeMove = metronomeMove;
+        MetronomeMove = pokemon;
     }
 }
