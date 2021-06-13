@@ -9,9 +9,9 @@ public class YellowTASPidgeFable : YellowForce {
     //    > Make pathfinding consider turn frames (last moon room/post underground elixer house)
 
     public YellowTASPidgeFable() : base(true) {
-        Show();
-        //ClearCache();
-        //Record("yellowPidgeottoMainToKoga");
+        //Show();
+        ClearCache();
+        Record("yellowPidgeottoMainToKoga");
 
         CacheState("bk2", () => {
             PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 19323);
@@ -392,8 +392,8 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("MEGA PUNCH"));
             ForceTurn(new RbyTurn("THUNDERBOLT"));
 
-            // DOUBLE CLEFAIRY
-            TalkTo("Route8", 51, 11);
+            // GAMBLER
+            TalkTo("Route8", 46, 13);
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
 
@@ -483,7 +483,7 @@ public class YellowTASPidgeFable : YellowForce {
             ClearText(); // Pokeflute received
         });
 
-        ClearCache();
+        //ClearCache();
         //Record("yellowTASKoga");
 
         CacheState("koga", () => {
@@ -686,8 +686,7 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("BITE", 1));
             ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", 1), new RbyTurn("Tail Whip", Miss));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
 
             UseItem("ESCAPE ROPE");
         });
@@ -708,6 +707,7 @@ public class YellowTASPidgeFable : YellowForce {
         });
 
         //ClearCache();
+        //Record("yellowTASGiovanni");
 
         CacheState("giovannigym", () => {
             MoveTo(1, 5);
@@ -750,7 +750,7 @@ public class YellowTASPidgeFable : YellowForce {
             // VIRIDIAN RIVAL
             MoveTo("Route22", 29, 5);
             ClearText();
-            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("SLASH", 1));
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("SLASH", 20));
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
             ForceTurn(new RbyTurn("MEGA KICK", Crit));
             ForceTurn(new RbyTurn("MEGA KICK", Crit));
@@ -857,12 +857,12 @@ public class YellowTASPidgeFable : YellowForce {
             ClearText();
             ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
             ForceTurn(new RbyTurn("MEGA KICK"), new RbyTurn("ICE PUNCH", Miss));
             ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
         });
 
-        ClearCache();
+        //ClearCache();
 
         CacheState("bruno", () => {
             // BRUNO
@@ -889,30 +889,33 @@ public class YellowTASPidgeFable : YellowForce {
             ForceTurn(new RbyTurn("METRONOME", "FISSURE"));
         });
 
+        //ClearCache();
+
         CacheState("lance", () => {
             UseItem("ELIXER", "CLEFABLE");
             // LANCE
             Execute("U U U");
             MoveTo("LancesRoom", 6, 2);
             ClearText();
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("HYDRO PUMP", Miss));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit));
-            ForceTurn(new RbyTurn("FISSURE"));
-            ForceTurn(new RbyTurn("FISSURE"));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
             ForceTurn(new RbyTurn("THUNDERBOLT", Crit), new RbyTurn("SUPERSONIC", Miss));
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
         });
 
         CacheState("champion", () => {
             // CHAMPION
             Execute("L U U U");
             ClearText();
-            ForceTurn(new RbyTurn("X SPEED"), new RbyTurn("MIRROR MOVE", Miss));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("FISSURE"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
-            ForceTurn(new RbyTurn("HORN DRILL"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("METRONOME", "AGILITY"), new RbyTurn("KINESIS", Miss));
+            ForceTurn(new RbyTurn("MEGA KICK"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("MEGA KICK", Crit));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
+            ForceTurn(new RbyTurn("METRONOME", "HORN DRILL"));
 
             ClearText();
 
