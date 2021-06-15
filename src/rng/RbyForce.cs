@@ -1172,7 +1172,7 @@ public class RbyForce : Rby {
 
     public void Evolve() {
         RunUntil("Evolution_PartyMonLoop.done");
-        RunUntil(SYM["JoypadOverworld"] + 0xa);
+        //RunUntil(SYM["JoypadOverworld"] + 0xa);
     }
 
     public void RunAway() {

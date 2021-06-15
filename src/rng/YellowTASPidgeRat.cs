@@ -9,9 +9,9 @@ public class YellowTASPidgeRat : YellowForce {
     //    > Make pathfinding consider turn frames (last moon room/post underground elixer house)
 
     public YellowTASPidgeRat() : base(true) {
-        Show();
-        //ClearCache();
-        //Record("yellowPidgeottoMainToKoga");
+        //Show();
+        ClearCache();
+        Record("yellowPidgeottoRaticateTest");
 
         CacheState("bk2", () => {
             PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 19323);
@@ -73,8 +73,10 @@ public class YellowTASPidgeRat : YellowForce {
         //ClearCache();
 
         CacheState("route3", () => {
-            TalkTo(56,1,5);
-            Buy("ESCAPE ROPE", 6);
+            //If Buying Escape Ropes to save 2 item slots and save TM28 Dig for a later poke
+            //TalkTo(56,1,5);
+            //Buy("ESCAPE ROPE", 6);
+
             // ROUTE 3 BC 1
             MoveTo("Route3", 11, 6);
             ClearText();
@@ -102,7 +104,7 @@ public class YellowTASPidgeRat : YellowForce {
             ForceTurn(new RbyTurn("GUST", Crit), new RbyTurn("Harden"));
 
             MoveTo(32,11);
-            ForceEncounter(Action.Right, 7, 0xF6EF);
+            ForceEncounter(Action.Right, 7, 0xF08F);
             ClearText();
             ForceYoloball("POKE BALL");
             ClearText();
@@ -114,15 +116,15 @@ public class YellowTASPidgeRat : YellowForce {
         });
 
         //ClearCache();
+        //Record("yellowPidgeottoMainToKoga");
 
         CacheState("mtmoon", () => {
             PickupItemAt(59, 2, 2); // moonstone
             // SUPER NERD
             MoveTo("MtMoonB2F", 13, 8);
             ClearText();
-            MoveSwap("MEGA PUNCH", "POUND");
-            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("POUND", Crit | 1));
-            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("POUND", Crit | 1));
+            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("POUND", Crit | 20));
+            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("POUND", 20));
             ForceTurn(new RbyTurn("QUICK ATTACK"));
             ForceTurn(new RbyTurn("QUICK ATTACK", Crit), new RbyTurn("SCREECH", Miss));
             ForceTurn(new RbyTurn("QUICK ATTACK", Crit));
@@ -136,15 +138,16 @@ public class YellowTASPidgeRat : YellowForce {
             // Jessie & James
             MoveTo(3, 5);
             ClearText();
-            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("Leer", Miss));
+            ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("POISON STING", 1));
             ForceTurn(new RbyTurn("TACKLE", Crit));
             ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("GROWL", Miss));
             ForceTurn(new RbyTurn("TACKLE", Crit), new RbyTurn("GROWL", Miss));
-            ForceTurn(new RbyTurn("HYPER FANG", Crit | SideEffect), new RbyTurn("SMOG", Miss));
+            MoveSwap("TACKLE", "HYPER FANG");
+            ForceTurn(new RbyTurn("HYPER FANG", SideEffect), new RbyTurn("SMOG", Miss));
             ForceTurn(new RbyTurn("HYPER FANG", Crit));
         });
 
-        ClearCache();
+        //ClearCache();
         //Record("yellowTASMisty");
 
         CacheState("misty", () => {
@@ -182,6 +185,7 @@ public class YellowTASPidgeRat : YellowForce {
         });
 
         //ClearCache();
+        //Record("yellowTASMisty");
 
         CacheState("nuggetbridge", () => {
             //Record("yellowPidgeottoMainNuggetBridge");
@@ -191,43 +195,49 @@ public class YellowTASPidgeRat : YellowForce {
             MoveTo("CeruleanCity", 21, 6, Action.Up);
             ClearText();
             ClearText(); // sneaky joypad call
-            MoveSwap("MEGA PUNCH", "BUBBLEBEAM");
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("LEER", Miss));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG", Crit), new RbyTurn("PECK", 1), false);
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"), new RbyTurn("QUICK ATTACK", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG", Crit));
 
             // NUGGET BRIDGE #1
             TalkTo("Route24", 11, 31);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("TACKLE", Crit));
 
             // NUGGET BRIDGE #2
             TalkTo(10, 28);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("HYPER FANG", Crit));
             ClearText();
 
             // NUGGET BRIDGE #3
             TalkTo(11, 25);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"), new RbyTurn("QUICK ATTACK", Crit | 20));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("TACKLE", Crit));
 
             // NUGGET BRIDGE #4
             TalkTo(10, 22);
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("HYPER FANG", Crit));
 
             // NUGGET BRIDGE #5
             TalkTo(11, 19);
-            ForceTurn(new RbyTurn("POUND", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG", Crit));
 
-            // NUGGET BRIDGE #5
+            // NUGGET Rocket
             MoveTo(10, 15);
             ClearText();
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("TACKLE", Crit));
+            Evolve();
+            ClearText();
+        });
+
+        //ClearCache();
+
+        CacheState("route25", () => {
 
             TalkTo(6,5);
             ClearText();
@@ -245,24 +255,24 @@ public class YellowTASPidgeRat : YellowForce {
             // GIRLFRIEND
             TalkTo(18, 8, Action.Down);
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
 
             // BOYFRIEND
             MoveTo(24, 6);
             ClearText();
-            ForceTurn(new RbyTurn("POUND"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("QUICK ATTACK", Crit | 39));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
             // ODDISH GIRL
             TalkTo(37, 4);
-            ForceTurn(new RbyTurn("MEGA PUNCH"));
-            ForceTurn(new RbyTurn("POUND"));
-            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("TACKLE", Crit));
+            ForceTurn(new RbyTurn("QUICK ATTACK"));
+            ForceTurn(new RbyTurn("TACKLE", Crit));
             PickupItemAt(38, 3);
 
             debugPP(PartyMon1);
             MoveTo("BillsHouse", 4, 5);
-            UseItem("ETHER", "CLEFABLE", "BUBBLEBEAM");
+            UseItem("ETHER", "RATICATE", "HYPER FANG");
 
             TalkTo("BillsHouse", 6, 5, Action.Right);
             Yes();
@@ -270,29 +280,29 @@ public class YellowTASPidgeRat : YellowForce {
             TalkTo(1, 4);
         });
 
-        //ClearCache();
+        ClearCache();
         //Record("yellowSurge");
 
         CacheState("surge", () => {
             // DIG ROCKET
             MoveTo("CeruleanCity", 30, 9);
             ClearText();
-            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
-            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("HYPER FANG"));
+            ForceTurn(new RbyTurn("HYPER FANG"));
 
             PickupItemAt("UndergroundPathNorthSouth", 3, 4); // full restore
 
             // ROUTE 6 #1
             TalkTo("Route6", 11, 30, Action.Down);
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit), new RbyTurn("QUICK ATTACK", 20));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
 
             // ROUTE 6 #2
             MoveTo(10, 31);
             ClearText();
-            ForceTurn(new RbyTurn("POUND"));
-            ForceTurn(new RbyTurn("POUND", Crit), new RbyTurn("QUICK ATTACK", Crit));
+            ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("HYPER FANG"));
 
             MoveTo("VermilionCity", 18, 30);
             ClearText();
@@ -301,9 +311,9 @@ public class YellowTASPidgeRat : YellowForce {
             MoveTo("SSAnne2F", 37, 8, Action.Up);
             ClearText();
             ForceTurn(new RbyTurn("BUBBLEBEAM", Crit));
+            ForceTurn(new RbyTurn("QUICK ATTACK"));
             ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("BUBBLEBEAM"));
-            ForceTurn(new RbyTurn("MEGA PUNCH"));
+            ForceTurn(new RbyTurn("HYPER FANG"));
 
             TalkTo("SSAnneCaptainsRoom", 4, 2); // hm02 received
 
@@ -312,8 +322,8 @@ public class YellowTASPidgeRat : YellowForce {
             ClearText(); // watch cutscene
 
             MoveTo("VermilionCity", 15, 17, Action.Down);
-            ItemSwap("TM34", "ESCAPE ROPE");
             UseItem("HM01", "CHARMANDER");
+            UseItem("TM28", "RATICATE", "TACKLE");
             Cut();
 
             MoveTo("VermilionGym", 4, 9);
@@ -324,8 +334,8 @@ public class YellowTASPidgeRat : YellowForce {
 
             // SURGE
             TalkTo(5, 1);
-            ForceTurn(new RbyTurn("BUBBLEBEAM", SideEffect), new RbyTurn("GROWL", Miss));
-            ForceTurn(new RbyTurn("MEGA PUNCH", Crit));
+            Dispose();
+            ForceTurn(new RbyTurn("DIG", Crit), new RbyTurn("GROWL", Miss));
         });
 
         //ClearCache();

@@ -9,9 +9,9 @@ public class YellowTASPidgeFable : YellowForce {
     //    > Make pathfinding consider turn frames (last moon room/post underground elixer house)
 
     public YellowTASPidgeFable() : base(true) {
-        //Show();
+        Show();
         ClearCache();
-        Record("yellowPidgeottoMainToKoga");
+        //Record("yellowPidgeottoMainToKoga");
 
         CacheState("bk2", () => {
             PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 19323);
