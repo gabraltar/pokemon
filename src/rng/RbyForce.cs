@@ -22,6 +22,7 @@ public class RbyForce : Rby {
     public const int SideEffect = 0x100;
     public const int ThreeTurn = 0x200;
     public const int Hitself = 0x400;
+    public const int AiItem = 0x800;
 
     // pathfinding constants
     public const int WalkCost = 17;
@@ -110,7 +111,7 @@ public class RbyForce : Rby {
         if(useItem) {
             if(playerTurn.Pokemon != null) UseItem(playerTurn.Move, playerTurn.Pokemon);
             else UseItem(playerTurn.Move, playerTurn.Flags);
-        } else if(!BattleMon.ThrashingAbout) {
+        } else if(!BattleMon.ThrashingAbout && !BattleMon.Invulnerable) {
             if(CurrentMenuType != MenuType.Fight) BattleMenu(0, 0);
 
             int moveIndex = FindBattleMove(playerTurn.Move);
@@ -126,7 +127,7 @@ public class RbyForce : Rby {
             Inject(Joypad.A);
         }
 
-        if(!EnemyMon.StoringEnergy) {
+        if(!EnemyMon.StoringEnergy && enemyTurn != null && enemyTurn.Move != null) {
             Hold(Joypad.A, SYM["SelectEnemyMove.done"]);
             A = enemyTurn != null ? Moves[enemyTurn.Move].Id : 0;
         }
@@ -158,7 +159,7 @@ public class RbyForce : Rby {
                 if(EnemyParty.Where(mon => mon.HP > 0).Count() > 1) ClearTextUntil(Joypad.None, SYM["PlayCry"]);
                 else ClearText();
             }
-        } else {
+        } else if(!BattleMon.Invulnerable) {
             ClearText();
         }
     }
@@ -205,7 +206,9 @@ public class RbyForce : Rby {
                 } else if(sideEffects.Any(effect => address.StartsWith(effect))) { // various side effects
                     A = (turn.Flags & SideEffect) != 0 ? 0x00 : 0xff;
                 } else if(address.StartsWith("TrainerAI")) {  // trainer ai
-                    A = 0xff; // trainer ai is ingored for now;
+                    bool useItem = (turn.Flags & AiItem) > 0;
+                    A = useItem ? 0x00 : 0xff;
+                    if(useItem) break;
                 } else if(address.StartsWith("ThrashPetalDanceEffect")) {  // thresh/petal dance length
                     A = (turn.Flags & ThreeTurn) > 0 ? 0 : 1;
                 } else if(address.StartsWith("CheckPlayerStatusConditions.IsConfused") || address.StartsWith("CheckEnemyStatusConditions.IsConfused")) {  // confusion hit through

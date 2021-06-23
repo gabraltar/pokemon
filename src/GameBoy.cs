@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 public enum LoadFlags : int {
 
@@ -202,6 +204,51 @@ public partial class GameBoy : IDisposable {
         return Libgambatte.gambatte_gethitinterruptaddress(Handle);
     }
 
+    // Emulates 'runsamples' number of samples. Forces exactly 'runsamples' number of samples emulated. (1 sample = 2 cpu cycles)
+    public int RunForForce(int runsamples)
+    {
+        if (runsamples <= 0 || runsamples > (SamplesPerFrame + 2064))
+        {
+            throw new ArgumentOutOfRangeException("Invalid runsamples");
+        }
+        int samplesToEmit = runsamples;
+        while (true)
+        {
+            runsamples = samplesToEmit;
+            int videoFrameDoneSampleCount = Libgambatte.gambatte_runfor(Handle, VideoBuffer, 160, AudioBuffer, ref runsamples);
+            int outsamples = videoFrameDoneSampleCount >= 0 ? BufferSamples + videoFrameDoneSampleCount : BufferSamples + runsamples;
+            BufferSamples = BufferSamples + runsamples - outsamples;
+            EmulatedSamples += (ulong)outsamples;
+            samplesToEmit -= runsamples;
+
+            if (Scene != null)
+            {
+                Scene.OnAudioReady(outsamples);
+                // returns a positive value if a video frame needs to be drawn.
+                if (videoFrameDoneSampleCount >= 0)
+                {
+                    Scene.Begin();
+                    Scene.Render();
+                    Scene.End();
+                }
+            }
+            if (samplesToEmit <= 0)
+            {
+                break;
+            }
+        }
+
+        return Libgambatte.gambatte_gethitinterruptaddress(Handle);
+    }
+
+    public void RunForLongerThanAFrame(int samplesToRun) {
+        while (samplesToRun > 0) {
+            int samplesThisRun = samplesToRun >= SamplesPerFrame ? SamplesPerFrame : samplesToRun % SamplesPerFrame;
+            RunForForce(samplesThisRun);
+            samplesToRun -= samplesThisRun;
+        }
+    }
+
     // Emulates until the next video frame has to be drawn. Returns the hit address.
     public int AdvanceFrame(Joypad joypad = Joypad.None) {
         CurrentJoypad = joypad;
@@ -269,6 +316,11 @@ public partial class GameBoy : IDisposable {
         Libgambatte.gambatte_setspeedupflags(Handle, flags);
     }
 
+    // Adjusts the assumed clock speed of the CPU compared to the RTC
+    public void SetRTCDivisorOffset(int offset) {
+        Libgambatte.gambatte_setrtcdivisoroffset(Handle, offset);
+    }
+
     // Helper functions that translate SYM labels to their respective addresses.
     public int RunUntil(params string[] addrs) {
         return RunUntil(Array.ConvertAll(addrs, e => SYM[e]));
@@ -288,8 +340,8 @@ public partial class GameBoy : IDisposable {
 
     // Helper function that creates a basic scene graph with a video buffer component.
     public void Show() {
-        Scene s = new Scene(this, 320, 288);
-        s.AddComponent(new VideoBufferComponent(0, 0, 320, 288));
+        Scene s = new Scene(this, 160, 144);
+        s.AddComponent(new VideoBufferComponent(0, 0, 160, 144));
         SetSpeedupFlags(SpeedupFlags.NoSound);
     }
 
@@ -301,21 +353,41 @@ public partial class GameBoy : IDisposable {
     }
 
     public void PlayBizhawkMovie(string bk2File, int frameCount = int.MaxValue) {
-        using(FileStream bk2Stream = File.OpenRead(bk2File))
-        using(ZipArchive zip = new ZipArchive(bk2Stream, ZipArchiveMode.Read))
-        using(StreamReader bk2Reader = new StreamReader(zip.GetEntry("Input Log.txt").Open())) {
-            PlayBizhawkInputLog(bk2Reader.ReadToEnd().Split('\n'), frameCount);
+        using FileStream bk2Stream = File.OpenRead(bk2File);
+        using ZipArchive zip = new ZipArchive(bk2Stream, ZipArchiveMode.Read);
+        using StreamReader inputLogReader = new StreamReader(zip.GetEntry("Input Log.txt").Open());
+        using StreamReader syncSettingsReader = new StreamReader(zip.GetEntry("SyncSettings.json").Open());
+        using StreamReader movieHeaderStream = new StreamReader(zip.GetEntry("Header.txt").Open());
+
+        var syncSettings = JObject.Parse(syncSettingsReader.ReadToEnd());
+        var movieHeader = movieHeaderStream.ReadToEnd();
+        var emuVersion = movieHeader.Substring(movieHeader.IndexOf("Version Version") + 16, 5);
+        var emuSemanticVersion = emuVersion.Split('.');
+        int startInput = int.Parse(emuSemanticVersion[0]) >= 2 
+            && int.Parse(emuSemanticVersion[1]) >= 6 
+            && int.Parse(emuSemanticVersion[2]) >= 2 ? 14 : 0;
+
+        if (syncSettings.SelectToken("o.RTCDivisorOffset") != null) {
+            int rtcDivisorOffset = (int)syncSettings.SelectToken("o.RTCDivisorOffset");
+            if (rtcDivisorOffset != 0) {
+                SetRTCDivisorOffset(rtcDivisorOffset);
+            }
         }
+        string[] lines = inputLogReader.ReadToEnd().Split('\n');
+        lines = lines.Subarray(2 + startInput, lines.Length - 4 - startInput);
+        PlayBizhawkInputLog(lines);
     }
 
     public void PlayBizhawkInputLog(string fileName, int frameCount = int.MaxValue) {
-        PlayBizhawkInputLog(File.ReadAllLines(fileName), frameCount);
+        PlayBizhawkInputLog(File.ReadAllLines(fileName));
     }
 
-    public void PlayBizhawkInputLog(string[] lines, int frameCount = int.MaxValue) {
+    public void PlayBizhawkInputLog(string[] lines) {
         Joypad[] joypadFlags = { Joypad.Up, Joypad.Down, Joypad.Left, Joypad.Right, Joypad.Start, Joypad.Select, Joypad.B, Joypad.A };
-        lines = lines.Subarray(2, lines.Length - 4);
-        for(int i = 0; i < lines.Length && i < frameCount; i++) {
+        for(int i = 0; i < 14; i++) {
+            AdvanceFrame();
+        }
+        for(int i = 0; i < lines.Length; i++) {
             if(lines[i][9] != '.') {
                 HardReset(false);
             }
@@ -326,6 +398,23 @@ public partial class GameBoy : IDisposable {
                 }
             }
             AdvanceFrame(joypad);
+        }
+    }
+
+    public void PlayGBIInputLog(string inputLogPath) {
+        using StreamReader inputLogReader = new StreamReader(inputLogPath);
+        int samplesToRun = 0;
+        string[] inputTimestamp = new string[2];
+        foreach (string line in inputLogReader.ReadToEnd().Trim().Split('\n')) {
+
+            inputTimestamp = line.Split(' ');
+            //maximum offset -321
+            //minimum offset -124
+            samplesToRun = (int)( ulong.Parse(inputTimestamp[0], System.Globalization.NumberStyles.HexNumber) * 512 - EmulatedSamples - 124);
+            Joypad input = (Joypad)byte.Parse(inputTimestamp[1].TrimEnd('\r'), System.Globalization.NumberStyles.HexNumber);
+            RunForLongerThanAFrame(samplesToRun);
+
+            CurrentJoypad = input;
         }
     }
 

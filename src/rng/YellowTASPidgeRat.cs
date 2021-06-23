@@ -335,7 +335,8 @@ public class YellowTASPidgeRat : YellowForce {
             // SURGE
             TalkTo(5, 1);
             Dispose();
-            ForceTurn(new RbyTurn("DIG", Crit), new RbyTurn("GROWL", Miss));
+            ForceTurn(new RbyTurn("DIG"), new RbyTurn("GROWL", Miss)); // dug under ground
+            ForceTurn(new RbyTurn("DIG", Crit), new RbyTurn("GROWL", Miss)); // used dig
         });
 
         //ClearCache();

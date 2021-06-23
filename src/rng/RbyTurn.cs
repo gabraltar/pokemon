@@ -5,6 +5,10 @@ public class RbyTurn {
     public string MetronomeMove;
     public int Flags;
 
+    public RbyTurn(int flags = 0) {
+        Flags = flags;
+    }
+
     public RbyTurn(string move, int flags = 0) {
         Move = move.ToUpper();
         Flags = flags;

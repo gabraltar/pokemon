@@ -20,7 +20,9 @@ SDL2.dll
 *.png
 *.bmp
 *.txt
+!src/testing/verifiedMovies/gbi/*.txt
 *.bin
 *.gqs
 movies/*
 rng-cache/*
+src/testing/screenshots

@@ -10,7 +10,7 @@ public class YellowTASCurrent : YellowForce {
 
     public YellowTASCurrent() : base(true) {
         Show();
-        Record("yellow-tas-current");
+        //Record("yellow-tas-current");
 
         PlayBizhawkMovie("bizhawk/yellowglitchless.bk2", 25604);
         ForceTurn(new RbyTurn("THUNDERSHOCK", Crit), new RbyTurn("SAND-ATTACK", Miss));
@@ -20,7 +20,6 @@ public class YellowTASCurrent : YellowForce {
         ChooseMenuItem(1);
         ClearText();
         ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("GUST", Crit));
-        MoveTo(22,9);
 
         TalkTo(13,17);
         ForceTurn(new RbyTurn("HORN ATTACK"), new RbyTurn("TACKLE", 38));
@@ -29,18 +28,32 @@ public class YellowTASCurrent : YellowForce {
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
         ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("STRING SHOT"));
 
+        // Duogeotto
+        // MoveTo(23,9);
+        // ForceEncounter(Action.Left, 9, 0xE000);
+        // ClearText();
+        // ForceTurn(new RbyTurn("TACKLE"), new RbyTurn("SAND-ATTACK", Miss));
+        // ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+        // ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SAND-ATTACK", Miss));
+
         // WEEDLE GUY
         TalkTo(2, 19);
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("STRING SHOT", Miss));
 
-        MoveTo(1,14);
+        // L8 Pidgey for Duogeotto
+        // MoveTo(1,15);
+        // ForceEncounter(Action.Up, 8, 0xE000);
+        // ClearText();
+        // ForceTurn(new RbyTurn("HORN ATTACK", Crit));
+
+        MoveTo(1,9);
         ForceEncounter(Action.Up, 4, 0xffff);
         ClearText();
         ForceYoloball("POKE BALL");
         ClearText();
         No(); // pidgey caught
-        
+        System.Console.WriteLine(EmulatedSamples/SamplesPerFrame);
         TalkTo("PewterGym", 3, 6);
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCRATCH", 38));
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("SCRATCH", Miss));
@@ -77,6 +90,7 @@ public class YellowTASCurrent : YellowForce {
         ForceTurn(new RbyTurn("HORN ATTACK", Crit), new RbyTurn("HARDEN"));
         ForceTurn(new RbyTurn("DOUBLE KICK"), new RbyTurn("HARDEN"));
         Evolve();
+        RunUntil("JoypadOverworld");
         /*
             Works like TalkTo, but picks up the item at the specified coordinates instead.
         */
