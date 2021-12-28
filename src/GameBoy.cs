@@ -69,6 +69,14 @@ public partial class GameBoy : IDisposable {
     public ulong EmulatedSamples;
 
     // Returns the current cycle-based time counter as dividers. (2^21/sec)
+
+        public const int GBC_GBA_Delay = 485808;
+
+    public void HardReset(int stall)
+    {
+        Libgambatte.gambatte_reset(Handle, stall);
+        BufferSamples = 0;
+    }
     public int TimeNow {
         get { return Libgambatte.gambatte_timenow(Handle); }
     }
@@ -244,29 +252,44 @@ public partial class GameBoy : IDisposable {
         Scene.AddComponent(new RecordingComponent(movie));
     }
 
-    public void PlayBizhawkMovie(string bk2File) {
-        using(FileStream bk2Stream = File.OpenRead(bk2File))
-        using(ZipArchive zip = new ZipArchive(bk2Stream, ZipArchiveMode.Read))
-        using(StreamReader bk2Reader = new StreamReader(zip.GetEntry("Input Log.txt").Open())) {
-            PlayBizhawkInputLog(bk2Reader.ReadToEnd().Split('\n'));
-        }
-    }
+    // public void PlayBizhawkMovie(string bk2File) {
+    //     using(FileStream bk2Stream = File.OpenRead(bk2File))
+    //     using(ZipArchive zip = new ZipArchive(bk2Stream, ZipArchiveMode.Read))
+    //     using(StreamReader bk2Reader = new StreamReader(zip.GetEntry("Input Log.txt").Open())) {
+    //         PlayBizhawkInputLogELF3xLinked(bk2Reader.ReadToEnd().Split('\n'));
+    //     }
+    // }
 
-    public void PlayBizhawkInputLog(string fileName) {
-        PlayBizhawkInputLog(File.ReadAllLines(fileName));
-    }
 
-    public void PlayBizhawkInputLog(string[] lines) {
-        Joypad[] joypadFlags = { Joypad.Up, Joypad.Down, Joypad.Left, Joypad.Right, Joypad.Start, Joypad.Select, Joypad.B, Joypad.A };
+
+    public void PlayBizhawkInputLogELF3xLinked(string fileName)
+    {
+        var lines = File.ReadAllLines(fileName);
         lines = lines.Subarray(2, lines.Length - 3);
-        for(int i = 0; i < lines.Length; i++) {
+        Joypad[] joypadFlags = { Joypad.Up, Joypad.Down, Joypad.Left, Joypad.Right, Joypad.Start, Joypad.Select, Joypad.B, Joypad.A };
+        var frameOverflow = 0;
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i][25] != '.')
+            {
+                HardReset(GBC_GBA_Delay);
+            }
             Joypad joypad = Joypad.None;
-            for(int j = 0; j < joypadFlags.Length; j++) {
-                if(lines[i][j + 1] != '.') {
+            for (int j = 0; j < joypadFlags.Length; j++)
+            {
+                if (lines[i][j + 25] != '.')
+                {
                     joypad |= joypadFlags[j];
                 }
             }
-            AdvanceFrame(joypad);
+            CurrentJoypad = joypad;
+            while (frameOverflow < SamplesPerFrame)
+            {
+                var baseSamps = EmulatedSamples;
+                RunFor(SamplesPerFrame - frameOverflow);
+                frameOverflow += (int)(EmulatedSamples - baseSamps);
+            }
+            CurrentJoypad = Joypad.None;
         }
     }
 

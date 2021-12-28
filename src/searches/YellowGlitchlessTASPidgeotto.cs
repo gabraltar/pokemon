@@ -57,7 +57,7 @@ public static class YellowGlitchlessTASPidgeotto {
                     int spd = (dvs >> 4) & 0xf;
                     int spc = dvs & 0xf;
 
-                    if (atk == 14 && (def & 1) == 0) {
+                    if (atk == 14 && (def < 6) && (spd >= 7)) {
                         lock (Writer) {
                             var foundPidgeotto = $"[{state.WastedFrames} cost] {state.Log}{edge.Action.LogString()} - 0x{dvs:x4}";
                             Writer.WriteLine(foundPidgeotto);
@@ -81,7 +81,7 @@ public static class YellowGlitchlessTASPidgeotto {
         }
     }
 
-    public static void StartSearch(int numThreads = 6) {
+    public static void StartSearch(int numThreads = 5) {
         Yellow dummyGb = new Yellow();
         
         RbyMap route2map = dummyGb.Maps[13];
@@ -106,14 +106,15 @@ public static class YellowGlitchlessTASPidgeotto {
             new Thread(parameter => {
                 int index = (int)parameter;
                 Yellow gb = new Yellow();
+                gb.HardReset(GameBoy.GBC_GBA_Delay);
                 Console.WriteLine("starting movie");
-                gb.PlayBizhawkInputLog("movies/TiKevin83YellowGlitchless2021Pidgeotto.txt");
+                gb.PlayBizhawkInputLogELF3xLinked("movies/TiKevin83YellowGlitchless2021Pidgeotto.txt");
                 Console.WriteLine("finished movie");
-                gb.RunUntil("JoypadOverworld");
                 for (int i = 0; i < index; i++) {
                     gb.AdvanceFrame();
                     gb.RunUntil("JoypadOverworld");
                 }
+                Console.WriteLine(gb.Tile.X);
                 gb.SetSpeedupFlags(SpeedupFlags.NoSound | SpeedupFlags.NoVideo);
 
                 OverworldSearch(gb, new YellowGlitchlessTASPidgeottoState {

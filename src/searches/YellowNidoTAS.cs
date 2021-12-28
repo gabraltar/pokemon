@@ -95,7 +95,7 @@ public static class YellowNidoTAS {
                 int index = (int)parameter;
                 Yellow gb = new Yellow();
                 Console.WriteLine("starting movie");
-                gb.PlayBizhawkInputLog("movies/TiKevin83YellowGlitchless2021txt");
+                gb.PlayBizhawkInputLogELF3xLinked("movies/TiKevin83YellowGlitchless2021txt");
                 gb.SetSpeedupFlags(SpeedupFlags.NoSound | SpeedupFlags.NoVideo);
                 Console.WriteLine("finished movie");
                 gb.RunUntil("JoypadOverworld");
