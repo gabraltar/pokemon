@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 public enum LoadFlags : int {
 
     GcbMode = 0x01,          // Treat the ROM as having CGB support regardless of what its header advertises.
-    GbaFlag = 0x02,          // Use GBA initial CPU register values in CGB mode.
+     GbaFlag = 0x02,          
     MultiCartCompat = 0x04,  // Use heuristics to detect and support multicart MBCs disguised as MBC1.
     SgbMode = 0x08,          // Treat the ROM as having SGB support regardless of what its header advertises.
     ReadOnlySav = 0x10,      // Prevent implicit saveSavedata calls for the ROM.
@@ -95,7 +95,7 @@ public partial class GameBoy : IDisposable {
 
         Handle = Libgambatte.gambatte_create();
         Debug.Assert(Libgambatte.gambatte_loadbios(Handle, biosFile, 0x900, 0x31672598) == 0, "Unable to load BIOS!");
-        Debug.Assert(Libgambatte.gambatte_load(Handle, romFile, LoadFlags.GbaFlag | LoadFlags.GcbMode | LoadFlags.ReadOnlySav) == 0, "Unable to load ROM!");
+        Debug.Assert(Libgambatte.gambatte_load(Handle, romFile, /* LoadFlags.GbaFlag | */ LoadFlags.GcbMode | LoadFlags.ReadOnlySav) == 0, "Unable to load ROM!");
 
         VideoBuffer = new byte[160 * 144 * 4];
         AudioBuffer = new byte[(SamplesPerFrame + 2064) * 2 * 2]; // Stereo 16-bit samples
@@ -266,11 +266,11 @@ public partial class GameBoy : IDisposable {
     {
         var lines = File.ReadAllLines(fileName);
         lines = lines.Subarray(2, lines.Length - 3);
-        Joypad[] joypadFlags = { Joypad.Up, Joypad.Down, Joypad.Left, Joypad.Right, Joypad.Start, Joypad.Select, Joypad.B, Joypad.A };
+        Joypad[] joypadFlags = { Joypad.Up, Joypad.Down, Joypad.Left, Joypad.Right, Joypad.A, Joypad.B, Joypad.Select, Joypad.Start };
         var frameOverflow = 0;
         for (int i = 0; i < lines.Length; i++)
         {
-            if (lines[i][25] != '.')
+            if (lines[i][8 + 25] != '.')
             {
                 HardReset(GBC_GBA_Delay);
             }
@@ -289,6 +289,7 @@ public partial class GameBoy : IDisposable {
                 RunFor(SamplesPerFrame - frameOverflow);
                 frameOverflow += (int)(EmulatedSamples - baseSamps);
             }
+            frameOverflow -= SamplesPerFrame;
             CurrentJoypad = Joypad.None;
         }
     }

@@ -74,7 +74,8 @@ public interface RenderContext : IDisposable {
 public static class Renderer {
 
     // Currently used render API and its capabilities.
-    public static RenderContext RenderAPI = new OpenGLRenderContext();
+    public static RenderContext RenderAPI = new SDL2RenderContext();
+
     public static RendererCapabilities Capabilities;
     public static Window Window;
 
