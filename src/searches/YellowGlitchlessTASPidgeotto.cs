@@ -61,9 +61,9 @@ public static class YellowGlitchlessTASPidgeotto {
                 //                                   if (gb.CpuRead("wEnemyMonSpecies") == gb.Species["PIDGEY"].Id) {
                 //      Console.WriteLine("Pidgey Encounter");
                 //  }
-                 if (gb.CpuRead("wEnemyMonSpecies") == gb.Species["CATERPIE"].Id) {
-                     Console.WriteLine("Caterpie Encounter");
-                 }
+                //  if (gb.CpuRead("wEnemyMonSpecies") == gb.Species["CATERPIE"].Id) {
+                //      Console.WriteLine("Caterpie Encounter");
+                //  }
                 if (gb.CpuRead("wEnemyMonSpecies") == gb.Species["PIDGEOTTO"].Id) {
                     Console.WriteLine("Pidgeotto Encounter");
                     int dvs = gb.CpuRead("wEnemyMonDVs") << 8 | gb.CpuRead(gb.SYM["wEnemyMonDVs"] + 1);
@@ -73,7 +73,7 @@ public static class YellowGlitchlessTASPidgeotto {
                     int spd = (dvs >> 4) & 0xf;
                     int spc = dvs & 0xf;
 
-                    if((atk == 15) && (def < 7) && (spd > 6)){
+                    if ((atk == 15) && (spd > 6)){
                         lock (Writer) {
                             var foundPidgeotto = $"[{state.WastedFrames} cost] {state.Log}{edge.Action.LogString()} - 0x{dvs:x4}";
                             Writer.WriteLine(foundPidgeotto);
@@ -81,6 +81,7 @@ public static class YellowGlitchlessTASPidgeotto {
                             Console.WriteLine(foundPidgeotto);
                         }
                     }
+                    
                     
                 }
                 continue;
@@ -105,28 +106,26 @@ public static class YellowGlitchlessTASPidgeotto {
         }
     }
 
-    public static void StartSearch(int numThreads = 5) {
+    public static void StartSearch(int numThreads = 8) {
         Yellow dummyGb = new Yellow();
-        RbyMap viridianCityMap = dummyGb.Maps[1];
-        RbyMap route2map = dummyGb.Maps[13];
-        RbyMap gatehouseMap = dummyGb.Maps[50];
-        RbyMap viridianForestMap = dummyGb.Maps[51];
-        Pathfinding.GenerateEdges(viridianCityMap, 0, 17, viridianCityMap.Tileset.LandPermissions, Action.Right | Action.Down | Action.Up | Action.Left | Action.Delay | Action.A, viridianForestMap[8, 46]);
-        Pathfinding.GenerateEdges(route2map, 0, 17, route2map.Tileset.LandPermissions, Action.Up | Action.Left | Action.A, route2map[3, 44]);
-        Pathfinding.GenerateEdges(gatehouseMap, 0, 17, gatehouseMap.Tileset.LandPermissions, Action.Right | Action.Up | Action.A, gatehouseMap[5, 0]);
-        Pathfinding.GenerateEdges(viridianForestMap, 0, 17, viridianForestMap.Tileset.LandPermissions, Action.Right | Action.Down | Action.Up | Action.Left | Action.A, viridianForestMap[11, 16]);
-        RbyTile startTile = route2map[8, 46];
-        viridianCityMap[18, 0].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = route2map[8, 71], NextEdgeset = 0, Cost = 0 });
-        viridianCityMap[17, 0].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = route2map[7, 71], NextEdgeset = 0, Cost = 0 });
-        route2map[3, 44].AddEdge(0, new Edge<RbyTile>() { Action = Action.Up, NextTile = gatehouseMap[4, 7], NextEdgeset = 0, Cost = 0 });
-        gatehouseMap[4, 7].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = gatehouseMap[4, 6], NextEdgeset = 0, Cost = 0 });
-        gatehouseMap[5, 1].AddEdge(0, new Edge<RbyTile>() { Action = Action.Up, NextTile = viridianForestMap[16, 47], NextEdgeset = 0, Cost = 0 });
-        viridianForestMap[16, 47].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = viridianForestMap[16, 46], NextEdgeset = 0, Cost = 0 });
-        viridianForestMap[25, 12].RemoveEdge(0, Action.A);
-        viridianForestMap[25, 12].RemoveEdge(0, Action.Up);
-        viridianForestMap[26, 12].RemoveEdge(0, Action.Left);
-        viridianForestMap[26, 11].RemoveEdge(0, Action.Left);
-        viridianForestMap[25,12].GetEdge(0, Action.Right).Cost = 0;
+        RbyMap route15map = dummyGb.Maps[26];
+        // RbyMap route2map = dummyGb.Maps[13];
+        // RbyMap gatehouseMap = dummyGb.Maps[50];
+        // RbyMap viridianForestMap = dummyGb.Maps[51];
+        Pathfinding.GenerateEdges(route15map, 0, 17, route15map.Tileset.LandPermissions, Action.Up | Action.Down | Action.Right | Action.A, route15map[57, 9]);
+        //Pathfinding.GenerateEdges(route2map, 0, 17, route2map.Tileset.LandPermissions, Action.Up | Action.Left | Action.A, route2map[3, 44]);
+        // Pathfinding.GenerateEdges(gatehouseMap, 0, 17, gatehouseMap.Tileset.LandPermissions, Action.Right | Action.Up | Action.A, gatehouseMap[5, 0]);
+        // Pathfinding.GenerateEdges(viridianForestMap, 0, 17, viridianForestMap.Tileset.LandPermissions, Action.Right | Action.Down | Action.Up | Action.Left | Action.A, viridianForestMap[1, 19]);
+        RbyTile startTile = route15map[14, 8];
+        // route2map[3, 44].AddEdge(0, new Edge<RbyTile>() { Action = Action.Up, NextTile = gatehouseMap[4, 7], NextEdgeset = 0, Cost = 0 });
+        // gatehouseMap[4, 7].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = gatehouseMap[4, 6], NextEdgeset = 0, Cost = 0 });
+        // gatehouseMap[5, 1].AddEdge(0, new Edge<RbyTile>() { Action = Action.Up, NextTile = viridianForestMap[16, 47], NextEdgeset = 0, Cost = 0 });
+        // viridianForestMap[16, 47].AddEdge(0, new Edge<RbyTile>(){Action = Action.Up, NextTile = viridianForestMap[16, 46], NextEdgeset = 0, Cost = 0 });
+        // viridianForestMap[25, 12].RemoveEdge(0, Action.A);
+        // viridianForestMap[25, 12].RemoveEdge(0, Action.Up);
+        // viridianForestMap[26, 12].RemoveEdge(0, Action.Left);
+        // viridianForestMap[26, 11].RemoveEdge(0, Action.Left);
+        // viridianForestMap[25,12].GetEdge(0, Action.Right).Cost = 0;
         Writer = new StreamWriter("Pidgeottos" + DateTime.Now.Ticks + ".txt");
         
         for (int threadIndex = 0; threadIndex < numThreads; threadIndex++) {
@@ -150,6 +149,7 @@ public static class YellowGlitchlessTASPidgeotto {
                     Tile = startTile,
                     WastedFrames = 0,
                     EdgeSet = 0,
+                    BlockedActions = Action.A,
                     HRandomAdd = gb.CpuRead("hRandomAdd"),
                     HRandomSub = gb.CpuRead("hRandomSub"),
                     RDiv = gb.CpuRead(0xFF04),
