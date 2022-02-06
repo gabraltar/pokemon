@@ -17,6 +17,7 @@ public class GoldRattataTASState
 
     public override int GetHashCode()
     {
+
         var hash = new HashCode();
         hash.Add(Tile.X);
         hash.Add(Tile.Y);
@@ -126,10 +127,19 @@ public static class GoldRattataTAS
 
         GscMap azaleaTownMap = dummyGb.Maps["AzaleaTown"];
         GscMap slowpokeWellMap = dummyGb.Maps["SlowpokeWellB1F"];
+        azaleaTownMap.Sprites.Remove(31, 9);
         //Pathfinding.GenerateEdges(violetCityMap, 0, 16, violetCityMap.Tileset.LandPermissions, Action.Delay | Action.Down | Action.Up | Action.Left | Action.Right | Action.A, violetCityMap[14, 35]);
+        // Pathfinding.GenerateEdges(azaleaTownMap, 0, 16, azaleaTownMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Right | Action.A, azaleaTownMap[56, 15]);
         Pathfinding.GenerateEdges(azaleaTownMap, 0, 16, azaleaTownMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Right | Action.A, azaleaTownMap[31, 8]);
-        Pathfinding.GenerateEdges(slowpokeWellMap, 0, 16, slowpokeWellMap.Tileset.LandPermissions, Action.Delay | Action.Left | Action.Up | Action.A, slowpokeWellMap[15, 11]);
+        Pathfinding.GenerateEdges(slowpokeWellMap, 0, 16, slowpokeWellMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Left | Action.A, slowpokeWellMap[15, 11]);
+        // GscTile startTile = azaleaTownMap[15, 11];
         GscTile startTile = azaleaTownMap[15, 11];
+        azaleaTownMap[31, 8].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = slowpokeWellMap[17, 15], NextEdgeset = 0, Cost = 0 });
+        slowpokeWellMap[16, 15].RemoveEdge(0, Action.Up);
+        slowpokeWellMap[15, 15].RemoveEdge(0, Action.Left);
+        slowpokeWellMap[17, 14].RemoveEdge(0, Action.Left);
+        slowpokeWellMap[17, 12].RemoveEdge(0, Action.Up);
+        slowpokeWellMap[16, 12].RemoveEdge(0, Action.Up);
         // violetCityMap[14, 35].AddEdge(0, new Edge<GscTile>() { Action = Action.Down, NextTile = route32map[14, 0], NextEdgeset = 0, Cost = 0 });
         // violetCityMap[15, 35].AddEdge(0, new Edge<GscTile>() { Action = Action.Down, NextTile = route32map[15, 0], NextEdgeset = 0, Cost = 0 });
         // route32map[15, 20].RemoveEdge(0, Action.Left);
@@ -149,8 +159,9 @@ public static class GoldRattataTAS
                 gb.SetRTCOffset(-69);	
                 Console.WriteLine("starting movie");
 
-                gb.LoadStateBiz("basesaves/KRSlowpoke.State", 0);
+                gb.LoadStateBiz("basesaves/Core.bin", 0);
                 Console.WriteLine("finished movie");
+                gb.Show();
                 gb.Hold(Joypad.B, "OWPlayerInput");
                 /*for (int i = 0; i < index; i++)
                 {
