@@ -77,6 +77,9 @@ public partial class GameBoy : IDisposable {
         Libgambatte.gambatte_reset(Handle, stall);
         BufferSamples = 0;
     }
+        public void SetRTCOffset(int offset) {
+        Libgambatte.gambatte_setrtcdivisoroffset(Handle, offset);
+    }
     public int TimeNow {
         get { return Libgambatte.gambatte_timenow(Handle); }
     }
@@ -165,6 +168,41 @@ public partial class GameBoy : IDisposable {
         for(int i = 0; i < amount; i++) AdvanceFrame(joypad);
     }
 
+public bool LoadStateBiz(string path, int which) {
+    return LoadStateBiz(File.ReadAllBytes(path), which);
+}
+
+
+public bool LoadStateBiz(byte[] buffer, int which) {
+    using var reader = new BinaryReader(new MemoryStream(buffer));
+    var numCores = reader.ReadInt32();
+    if (which >= numCores) {
+        return false;
+    }
+    for (var i = 0; i < which; i++) {
+        var dummylen = reader.ReadInt32();
+        reader.ReadBytes(dummylen);
+        reader.ReadBoolean(); // is lag
+        reader.ReadInt32(); // lag count
+        reader.ReadInt32(); // frame count
+        reader.ReadUInt32(); // frame overflow
+        reader.ReadUInt64(); // cycle count
+        reader.ReadBoolean(); // is cgb
+        reader.ReadBoolean(); // is sgb
+        reader.ReadInt32(); // linked overflow
+        reader.ReadInt32(); // linked latches
+    }
+    var len = reader.ReadInt32();
+    if (len != Libgambatte.gambatte_newstatelen(Handle)) {
+        return false;
+    }
+    var state = reader.ReadBytes(len);
+    if (state.Length != len) {
+        return false;
+    }
+    return Libgambatte.gambatte_newstateload(Handle, state, len);
+}
+
     // Emulates while holding the specified input until the program counter hits one of the specified breakpoints.
     public unsafe int Hold(Joypad joypad, params int[] addrs) {
         fixed(int* addrPtr = addrs) { // Note: Not fixing the pointer causes an AccessValidationException.
@@ -178,10 +216,13 @@ public partial class GameBoy : IDisposable {
         }
     }
 
+
+
     // Helper function that emulates with no joypad held.
     public int RunUntil(params int[] addrs) {
         return Hold(Joypad.None, addrs);
     }
+
 
     // Writes one byte of data to the CPU bus.
     public void CpuWrite(int addr, byte data) {
@@ -210,6 +251,8 @@ public partial class GameBoy : IDisposable {
     public void LoadState(byte[] buffer) {
         Libgambatte.gambatte_loadstate(Handle, buffer, buffer.Length);
     }
+
+
 
     // Helper function that reads the buffer directly from disk.
     public void LoadState(string file) {
@@ -261,7 +304,6 @@ public partial class GameBoy : IDisposable {
     // }
 
 
-
     public void PlayBizhawkInputLogELF3xLinked(string fileName)
     {
         var lines = File.ReadAllLines(fileName);
@@ -270,14 +312,14 @@ public partial class GameBoy : IDisposable {
         var frameOverflow = 0;
         for (int i = 0; i < lines.Length; i++)
         {
-            if (lines[i][8 + 25] != '.')
+            if (lines[i][8 + 5] != '.')
             {
                 HardReset(GBC_GBA_Delay);
             }
             Joypad joypad = Joypad.None;
             for (int j = 0; j < joypadFlags.Length; j++)
             {
-                if (lines[i][j + 25] != '.')
+                if (lines[i][j + 5] != '.')
                 {
                     joypad |= joypadFlags[j];
                 }
@@ -313,7 +355,9 @@ public delegate Joypad InputGetter();
 public static unsafe class Libgambatte {
 
     public const string dll = "libgambatte.dll";
-
+    [DllImport(dll, CallingConvention = CallingConvention.Cdecl)]
+    public static extern int gambatte_newstatelen(IntPtr gb);
+    
     [DllImport(dll, CallingConvention = CallingConvention.Cdecl)]
     public static extern int gambatte_revision();
 
@@ -323,8 +367,12 @@ public static unsafe class Libgambatte {
     [DllImport(dll, CallingConvention = CallingConvention.Cdecl)]
     public static extern void gambatte_destroy(IntPtr gb);
 
+
     [DllImport(dll, CallingConvention = CallingConvention.Cdecl)]
     public static extern int gambatte_load(IntPtr gb, string romfile, LoadFlags flags);
+
+    		[DllImport("libgambatte", CallingConvention = CallingConvention.Cdecl)]
+		public static extern bool gambatte_newstateload(IntPtr core, byte[] data, int len);
 
     [DllImport(dll, CallingConvention = CallingConvention.Cdecl)]
     public static extern int gambatte_loadbios(IntPtr gb, string biosfile, int size, int crc);
