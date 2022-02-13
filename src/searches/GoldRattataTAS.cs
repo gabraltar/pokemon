@@ -35,7 +35,7 @@ public class GoldRattataTASState
 public static class GoldRattataTAS
 {
 
-    const int MaxCost = 20;
+    const int MaxCost = 600;
     static StreamWriter Writer;
     public static HashSet<int> seenStates = new HashSet<int>();
 
@@ -61,44 +61,36 @@ public static class GoldRattataTAS
                 continue;
             }
 
-            if (ret == gb.SYM["RandomEncounter.ok"])
-            {
-                /*var prerng = (gb.CpuRead("hRandomAdd") << 8) | gb.CpuRead("hRandomSub");
-                var prerdiv = gb.CpuRead(0xFF04);
-                var prerngframe = gb.CpuRead("hVBlankCounter");*/
-                gb.Hold(Joypad.B, gb.SYM["CalcMonStats"]);
-                // if (gb.CpuRead("wEnemyMonSpecies") == gb.Species["RATTATA"].Id && gb.CpuRead("wEnemyMonLevel") == 8)
-                {
-                    /*var postrng = (gb.CpuRead("hRandomAdd") << 8) | gb.CpuRead("hRandomSub");
-                    var postrdiv = gb.CpuRead(0xFF04);
-                    var postrngframe = gb.CpuRead("hVBlankCounter");*/
-
-                    int item = gb.CpuRead("wEnemyMonItem") << 8 | gb.CpuRead(gb.SYM["wEnemyMonItem"] + 1);
-
-                    //int hp = (((dvs >> 9) & 8) | ((dvs >> 6) & 4) | ((dvs >> 3) & 2) | (dvs & 1)) & 0xf;
-                    // int atk = (dvs >> 12) & 0xf;
-                    // int def = (dvs >> 8) & 0xf;
-                    // int spd = (dvs >> 4) & 0xf;
-                    // int spc = dvs & 0xf;
-
-                    // var statcheck = "";
-                    // if (atk == 12 && (def == 11 || def == 15) && spd >= 12 && (spc >= 8 || (spc & 3) >= 2))
-                    // {
-                    //     statcheck = " !";
-                    // }
-
-                    
-
-                            var foundRattata = $"[{state.WastedFrames} cost] {state.Log}{edge.Action.LogString()} - 0x{item:x4}";
-                            Writer.WriteLine(foundRattata);
-                            Writer.Flush();
-                            Console.WriteLine(foundRattata);
-                            continue;
-                        
-                    
-                }
+            if ((gb.Tile.X == 17) && (gb.Tile.Y == 26)){
                 continue;
             }
+
+            Console.WriteLine(ret);
+            if (ret == 680393) //wild encounter
+            {
+                // Console.WriteLine("encounter");
+                gb.Hold(Joypad.B, gb.SYM["CalcMonStats"]);
+                if(gb.CpuRead("wEnemyMonSpecies") == gb.Species["YANMA"].Id){
+
+                   
+                         lock (Writer){
+                        Console.WriteLine(state.Log);
+                        Writer.WriteLine(state.Log);
+                        Writer.Flush();
+                         
+                         }
+                }
+                else{
+                    continue;
+                }
+                    
+
+            }
+
+            // if(ret == 12605){
+            //     Console.WriteLine(state.Log);
+            // }
+
 
             Action blockedActions = state.BlockedActions;
 
@@ -126,53 +118,21 @@ public static class GoldRattataTAS
     {
         Crystal dummyGb = new Crystal();
 
-        GscMap azaleaTownMap = dummyGb.Maps["AzaleaTown"];
-        GscMap slowpokeWellMap = dummyGb.Maps["SlowpokeWellB1F"];
-        azaleaTownMap.Sprites.Remove(31, 9);
-        //Pathfinding.GenerateEdges(violetCityMap, 0, 16, violetCityMap.Tileset.LandPermissions, Action.Delay | Action.Down | Action.Up | Action.Left | Action.Right | Action.A, violetCityMap[14, 35]);
-        // Pathfinding.GenerateEdges(azaleaTownMap, 0, 16, azaleaTownMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Right | Action.A, azaleaTownMap[56, 15]);
-        Pathfinding.GenerateEdges(azaleaTownMap, 0, 16, azaleaTownMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Right | Action.A, azaleaTownMap[31, 8]);
-        Pathfinding.GenerateEdges(slowpokeWellMap, 0, 16, slowpokeWellMap.Tileset.LandPermissions, Action.Delay | Action.Up | Action.Left | Action.A, slowpokeWellMap[15, 12]);
-        // GscTile startTile = azaleaTownMap[15, 11];
-        GscTile startTile = azaleaTownMap[15, 10];
-        azaleaTownMap[31, 8].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = slowpokeWellMap[17, 15], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[17, 15].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = slowpokeWellMap[17, 14], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[17, 15].AddEdge(0, new Edge<GscTile>() {Action = Action.Left, NextTile = slowpokeWellMap[16, 15], NextEdgeset = 0, Cost = 0 });
-        for(int i = 0; i <= 3; i++){
-            slowpokeWellMap[17 - i, 12].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = slowpokeWellMap[17 - i, 13], NextEdgeset = 0, Cost = 0 });
-        }
-                for(int i = 0; i <= 3; i++){
-            slowpokeWellMap[15, 15 - i].AddEdge(0, new Edge<GscTile>() {Action = Action.Left, NextTile = slowpokeWellMap[14, 15 - i], NextEdgeset = 0, Cost = 0 });
-        }
-                for(int i = 0; i <= 3; i++){
-            slowpokeWellMap[14, 15 - i].AddEdge(0, new Edge<GscTile>() {Action = Action.Right, NextTile = slowpokeWellMap[15, 15 - i], NextEdgeset = 0, Cost = 0 });
-        }
-                for(int i = 0; i <= 3; i++){
-            slowpokeWellMap[15, 15 - i].AddEdge(0, new Edge<GscTile>() {Action = Action.Right, NextTile = slowpokeWellMap[16, 15 - i], NextEdgeset = 0, Cost = 0 });
-        }
-                for(int i = 0; i <= 3; i++){
-            slowpokeWellMap[17 - i, 12].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[17 - i, 13], NextEdgeset = 0, Cost = 0 });
-        }
-        slowpokeWellMap[14, 12].RemoveEdge(0, Action.Up);
-        slowpokeWellMap[15, 12].RemoveEdge(0, Action.Up);
-         slowpokeWellMap[16, 12].AddEdge(0, new Edge<GscTile>() {Action = Action.Right, NextTile = slowpokeWellMap[17, 12], NextEdgeset = 0, Cost = 0 });
-         slowpokeWellMap[16, 13].AddEdge(0, new Edge<GscTile>() {Action = Action.Right, NextTile = slowpokeWellMap[17, 13], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[15, 14].RemoveEdge(0, Action.Right);
-        slowpokeWellMap[15, 13].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[15, 14], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[14, 13].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[14, 14], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[17, 13].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[17, 14], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[14, 14].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[14, 15], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[15, 14].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = slowpokeWellMap[15, 15], NextEdgeset = 0, Cost = 0 });
-        slowpokeWellMap[15, 12].RemoveEdge(0, Action.Up);
-        slowpokeWellMap[16, 15].RemoveEdge(0, Action.Up);
-        slowpokeWellMap[15, 15].RemoveEdge(0, Action.Left);
-        slowpokeWellMap[17, 14].RemoveEdge(0, Action.Left);
-        slowpokeWellMap[17, 12].RemoveEdge(0, Action.Up);
-        slowpokeWellMap[16, 12].RemoveEdge(0, Action.Up);
+        GscMap route35map = dummyGb.Maps["Route35"];
 
-        Pathfinding.DebugDrawEdges(slowpokeWellMap, 0);
+        route35map.Sprites.Remove(17, 6);
+        GscTile startTile = route35map[17, 5];
+        for(int i = 0; i <= 20; i++){
+            route35map[17, 5 + i].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = route35map[17, 6 + i], NextEdgeset = 0, Cost = 0});
+        }
+                for(int i = 0; i <= 16; i++){
+            route35map[17, 9 + i].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = route35map[17, 8 + i], NextEdgeset = 0, Cost = 0});
+        }
+
+
+        Pathfinding.DebugDrawEdges(route35map, 0);
         dummyGb.Dispose();
-        // Writer = new StreamWriter("gold_rattata_tas" + DateTime.Now.Ticks + ".txt");
+        Writer = new StreamWriter("gold_rattata_tas" + DateTime.Now.Ticks + ".txt");
 
         for (int threadIndex = 0; threadIndex < numThreads; threadIndex++)
         {
