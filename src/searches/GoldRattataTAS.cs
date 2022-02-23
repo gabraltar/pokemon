@@ -118,19 +118,17 @@ public static class GoldRattataTAS
     {
         Crystal dummyGb = new Crystal();
 
-        GscMap route35map = dummyGb.Maps["Route35"];
-
-        route35map.Sprites.Remove(17, 6);
-        GscTile startTile = route35map[17, 5];
-        for(int i = 0; i <= 20; i++){
-            route35map[17, 5 + i].AddEdge(0, new Edge<GscTile>() {Action = Action.Down, NextTile = route35map[17, 6 + i], NextEdgeset = 0, Cost = 0});
-        }
-                for(int i = 0; i <= 16; i++){
-            route35map[17, 9 + i].AddEdge(0, new Edge<GscTile>() {Action = Action.Up, NextTile = route35map[17, 8 + i], NextEdgeset = 0, Cost = 0});
-        }
+        GscMap icepathmap = dummyGb.Maps["IcePathB3F"];
 
 
-        Pathfinding.DebugDrawEdges(route35map, 0);
+        GscTile startTile = icepathmap[3, 4];
+
+
+        // for(int i = 0; i <= 3; i++){
+        //     icepathmap[2 + i, 4].AddEdge(0, new Edge<GscTile>(){Action = Action.Right, NextTile = icepathmap[3 + i, 4]});
+        //     icepathmap[3 + i, 4].AddEdge(0, new Edge<GscTile>(){Action = Action.Left, NextTile = icepathmap[2 + i, 4]});
+        // }
+         Pathfinding.DebugDrawEdges(icepathmap, 0);
         dummyGb.Dispose();
         Writer = new StreamWriter("gold_rattata_tas" + DateTime.Now.Ticks + ".txt");
 
