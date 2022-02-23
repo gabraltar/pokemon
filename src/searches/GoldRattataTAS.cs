@@ -61,24 +61,35 @@ public static class GoldRattataTAS
                 continue;
             }
 
-            if ((gb.Tile.X == 17) && (gb.Tile.Y == 26)){
-                continue;
-            }
 
-            Console.WriteLine(ret);
+
+
             if (ret == 680393) //wild encounter
             {
                 // Console.WriteLine("encounter");
                 gb.Hold(Joypad.B, gb.SYM["CalcMonStats"]);
-                if(gb.CpuRead("wEnemyMonSpecies") == gb.Species["YANMA"].Id){
+                if(gb.CpuRead("wEnemyMonSpecies") == gb.Species["SWINUB"].Id && gb.CpuRead("wEnemyMonLevel") == 26){
 
-                   
+                    int dvs = gb.CpuRead("wEnemyMonDVs") << 8 | gb.CpuRead(gb.SYM["wEnemyMonDVs"] + 1);
+
+                    //int hp = (((dvs >> 9) & 8) | ((dvs >> 6) & 4) | ((dvs >> 3) & 2) | (dvs & 1)) & 0xf;
+                    int atk = (dvs >> 12) & 0xf;
+                    int def = (dvs >> 8) & 0xf;
+                    int spd = (dvs >> 4) & 0xf;
+                    int spc = dvs & 0xf;
+
+                    if(atk == 15){
                          lock (Writer){
                         Console.WriteLine(state.Log);
                         Writer.WriteLine(state.Log);
                         Writer.Flush();
-                         
+                         continue;
                          }
+                    }
+                    else{
+                        continue;
+                    }
+
                 }
                 else{
                     continue;
