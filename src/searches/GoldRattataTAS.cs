@@ -35,7 +35,7 @@ public class GoldRattataTASState
 public static class GoldRattataTAS
 {
 
-    const int MaxCost = 600;
+    const int MaxCost = 1000;
     static StreamWriter Writer;
     public static HashSet<int> seenStates = new HashSet<int>();
 
@@ -62,45 +62,39 @@ public static class GoldRattataTAS
             }
 
 
+     
 
-
-            if (ret == 680393) //wild encounter
+            if (ret == 681765) //wild encounter
             {
                 // Console.WriteLine("encounter");
+                
                 gb.Hold(Joypad.B, gb.SYM["CalcMonStats"]);
-                if(gb.CpuRead("wEnemyMonSpecies") == gb.Species["SWINUB"].Id && gb.CpuRead("wEnemyMonLevel") == 26){
-
-                    int dvs = gb.CpuRead("wEnemyMonDVs") << 8 | gb.CpuRead(gb.SYM["wEnemyMonDVs"] + 1);
+                
+                if(gb.CpuRead("wEnemyMonSpecies") == gb.Species["MARILL"].Id){
+                    // gb.Hold(Joypad.B, gb.SYM["GetOpponentItem"]);
 
                     //int hp = (((dvs >> 9) & 8) | ((dvs >> 6) & 4) | ((dvs >> 3) & 2) | (dvs & 1)) & 0xf;
-                    int atk = (dvs >> 12) & 0xf;
-                    int def = (dvs >> 8) & 0xf;
-                    int spd = (dvs >> 4) & 0xf;
-                    int spc = dvs & 0xf;
 
-                    if(atk == 15){
-                         lock (Writer){
-                        Console.WriteLine(state.Log);
-                        Writer.WriteLine(state.Log);
-                        Writer.Flush();
-                         continue;
-                         }
-                    }
-                    else{
-                        continue;
-                    }
+                     var foundSeadra = $"[{state.WastedFrames} cost] {state.Log}{edge.Action.LogString()}";
+                       lock (Writer){
+                           Writer.WriteLine(foundSeadra);
+                           Writer.Flush();
+Console.WriteLine(foundSeadra);
+                       }
+                    
+                    continue;
 
                 }
                 else{
                     continue;
                 }
-                    
-
             }
 
-            // if(ret == 12605){
-            //     Console.WriteLine(state.Log);
-            // }
+
+
+            if(ret == 12605){
+                Console.WriteLine(state.Log);
+            }
 
 
             Action blockedActions = state.BlockedActions;
@@ -125,21 +119,31 @@ public static class GoldRattataTAS
         }
     }
 
-    public static void StartSearch(int numThreads = 1)
+    public static async void StartSearch(int numThreads = 6)
     {
-        Crystal dummyGb = new Crystal();
+        Silver dummyGb = new Silver();
 
-        GscMap icepathmap = dummyGb.Maps["IcePathB3F"];
-
-
-        GscTile startTile = icepathmap[3, 4];
+        GscMap mtMortar = dummyGb.Maps["MountMortar1FInside"];
 
 
-        // for(int i = 0; i <= 3; i++){
-        //     icepathmap[2 + i, 4].AddEdge(0, new Edge<GscTile>(){Action = Action.Right, NextTile = icepathmap[3 + i, 4]});
-        //     icepathmap[3 + i, 4].AddEdge(0, new Edge<GscTile>(){Action = Action.Left, NextTile = icepathmap[2 + i, 4]});
-        // }
-         Pathfinding.DebugDrawEdges(icepathmap, 0);
+        GscTile startTile = mtMortar[17, 33];
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 2; j++){
+                 mtMortar[16 + i, 32 + j].AddEdge(0, new Edge<GscTile>(){Action = Action.Right, NextTile = mtMortar[17 + i, 32 + j], NextEdgeset = 0, Cost = 10 });
+                 mtMortar[17 + i, 32 + j].AddEdge(0, new Edge<GscTile>(){Action = Action.Left, NextTile = mtMortar[16 + i, 32 + j], NextEdgeset = 0, Cost = 10 }); 
+            }
+            
+        }
+       for(int i = 0; i < 4; i++){
+           mtMortar[16 + i, 33].AddEdge(0, new Edge<GscTile>(){Action = Action.Up, NextTile = mtMortar[16 + i, 32], NextEdgeset = 0, Cost = 10 });
+           mtMortar[16 + i, 32].AddEdge(0, new Edge<GscTile>(){Action = Action.Down, NextTile = mtMortar[16 + i, 33], NextEdgeset = 0, Cost = 10 });
+       }
+
+
+        
+Pathfinding.DebugDrawEdges(mtMortar, 0);
+       
         dummyGb.Dispose();
         Writer = new StreamWriter("gold_rattata_tas" + DateTime.Now.Ticks + ".txt");
 
@@ -147,13 +151,12 @@ public static class GoldRattataTAS
         {
             new Thread(parameter => {
                 int index = (int)parameter;
-                Crystal gb = new Crystal();
+                Silver gb = new Silver();
                 gb.SetRTCOffset(-69);	
                 Console.WriteLine("starting movie");
 
-                gb.LoadStateBiz("basesaves/Core.bin", 0);
+                gb.LoadStateBiz("basesaves/Core.bin", 1);
                 Console.WriteLine("finished movie");
-                gb.Show();
                 gb.Hold(Joypad.B, "OWPlayerInput");
                 /*for (int i = 0; i < index; i++)
                 {
